@@ -1,0 +1,49 @@
+/* =========================================================
+   tokens.css — single source of truth for the Kamal Transport brand.
+   Linked first on every page. Replaces the three competing token
+   sets that previously coexisted (style.css :root, corporate.css
+   .rf block, hierarchy-v6.css .hx block, clear-sequence-palette.css).
+   ========================================================= */
+
+:root{
+  /* Brand palette — one navy, one gold. */
+  --navy:  #123a5a;
+  --deep:  #082a43;
+  --blue:  #68b7e6;
+  --blue2: #3c9dcb;
+  --gold:  #d4a44b;
+  --ink:   #183044;
+  --muted: #4a5a68;
+  --line:  #d6e4ea;
+  --pale:  #f6fbfd;
+  --ice:   #eef9fd;
+
+  /* Retained utility tokens referenced by the shared style.css. */
+  --white:  #fff;
+  --max:    1180px;
+  --shadow: 0 20px 55px rgba(10,48,73,.12);
+
+  /* Layout system. */
+  --container: 1320px;
+
+  /* 8px spacing scale — every padding, margin and gap snaps to it. */
+  --s1: 8px;
+  --s2: 16px;
+  --s3: 24px;
+  --s4: 32px;
+  --s5: 48px;
+  --s6: 64px;
+  --s7: 88px;
+}
+
+/* =========================================================
+   Typography — one family: Archivo variable (OFL).
+   Self-host Archivo[wdth,wght].woff2 (wght 100–900, wdth 62–125)
+   in /fonts. Until that file is present the site renders in the
+   system-ui fallback below; see README.txt for the drop-in step.
+   ========================================================= */
+@font-face{font-family:'Archivo';font-style:normal;font-weight:100 900;font-stretch:62% 125%;font-display:swap;src:url('fonts/Archivo-variable.ttf') format('truetype');}
+
+:root{
+  --font: 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}

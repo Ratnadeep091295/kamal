@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 820" role="img" aria-labelledby="title desc">
+<title id="title">Kamal Transport walking floor tractor trailer</title><desc id="desc">A white and light-blue Kamal Transport tractor with a long walking-floor trailer in an industrial yard.</desc>
+<defs>
+ <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#d9f1fb"/><stop offset=".5" stop-color="#f7fbfd"/><stop offset="1" stop-color="#c9dce6"/></linearGradient>
+ <linearGradient id="ground" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#c4d1d8"/><stop offset="1" stop-color="#6f8794"/></linearGradient>
+ <linearGradient id="trailer" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#ffffff"/><stop offset=".47" stop-color="#d9f1fb"/><stop offset="1" stop-color="#7abfe3"/></linearGradient>
+ <linearGradient id="cab" x1="0" x2="1"><stop stop-color="#ffffff"/><stop offset=".48" stop-color="#d9effa"/><stop offset="1" stop-color="#55acd9"/></linearGradient>
+ <linearGradient id="chrome" x1="0" x2="1"><stop stop-color="#899aa4"/><stop offset=".26" stop-color="#f9ffff"/><stop offset=".56" stop-color="#b8c6ce"/><stop offset=".8" stop-color="#ffffff"/><stop offset="1" stop-color="#7e919d"/></linearGradient>
+ <filter id="shadow" x="-15%" y="-25%" width="140%" height="180%"><feGaussianBlur in="SourceAlpha" stdDeviation="13"/><feOffset dy="17"/><feColorMatrix values="0 0 0 0 .02 0 0 0 0 .09 0 0 0 0 .14 0 0 0 .34 0"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="soft"><feGaussianBlur stdDeviation="20"/></filter>
+</defs>
+<rect width="1800" height="820" fill="url(#sky)"/>
+<circle cx="245" cy="178" r="95" fill="#fff4d2" opacity=".55" filter="url(#soft)"/>
+<path d="M0 404C255 369 459 395 676 371c262-29 506-91 744-71 152 13 279 58 380 104V565H0z" fill="#9bb4c1" opacity=".32"/>
+<g fill="#527082" opacity=".17"><rect x="60" y="350" width="270" height="119"/><rect x="375" y="324" width="360" height="145"/><rect x="1270" y="335" width="410" height="134"/></g>
+<path d="M0 495L1800 420V820H0z" fill="url(#ground)"/>
+<path d="M-20 700L1820 532M-20 782L1820 614" stroke="#eef7fb" stroke-width="8" opacity=".32"/>
+<ellipse cx="1040" cy="698" rx="715" ry="42" fill="#17394e" opacity=".27"/>
+<g filter="url(#shadow)" transform="translate(70 72)">
+  <path d="M62 198h1015c30 0 54 24 54 54v317H62z" fill="url(#trailer)" stroke="#123a5a" stroke-width="9"/>
+  <path d="M69 205h1055v47H69z" fill="#123a5a"/>
+  <path d="M73 530h1052v39H73z" fill="#0d314d"/>
+  <path d="M107 530h972" stroke="#fff" stroke-width="7" stroke-dasharray="46 20" opacity=".88"/>
+  <g stroke="#fff" stroke-width="14" opacity=".58"><path d="M151 250v271M252 250v271M353 250v271M454 250v271M555 250v271M656 250v271M757 250v271M858 250v271M959 250v271M1060 250v271"/></g>
+  <path d="M260 324c67-61 153-82 258-82h329" fill="none" stroke="#123a5a" stroke-width="14" stroke-linecap="round" opacity=".92"/>
+  <path d="M275 342c63-44 145-60 244-60h328" fill="none" stroke="#d4a44b" stroke-width="6" stroke-linecap="round"/>
+  <text x="265" y="427" font-family="Arial, Helvetica, sans-serif" font-size="94" font-weight="900" letter-spacing="7" fill="#123a5a">KAMAL</text>
+  <text x="272" y="481" font-family="Arial, Helvetica, sans-serif" font-size="33" font-weight="700" letter-spacing="15" fill="#3f7798">TRANSPORT</text>
+  <g transform="translate(1120 105)">
+    <path d="M46 463V234c0-69 44-133 107-165 37-19 80-29 129-29h118c39 0 74 28 82 67l44 226 84 23c35 9 60 41 60 77v56H46z" fill="url(#cab)" stroke="#082a43" stroke-width="10"/>
+    <path d="M196 86h166c29 0 52 20 58 48l28 144H158V136c0-26 14-39 38-50z" fill="#dff4fc" stroke="#0c3552" stroke-width="8"/>
+    <path d="M229 112h111c21 0 39 14 43 35l20 103H229z" fill="#183c54"/>
+    <path d="M155 281h299l14 71H139z" fill="#73c2e8" opacity=".86"/>
+    <rect x="160" y="337" width="264" height="83" rx="5" fill="#fff" opacity=".97"/>
+    <path d="M173 369c26-24 59-32 100-32h101" fill="none" stroke="#123a5a" stroke-width="5" stroke-linecap="round"/>
+    <text x="174" y="397" font-family="Arial" font-size="31" font-weight="900" letter-spacing="1" fill="#123a5a">KAMAL TRANSPORT</text>
+    <text x="175" y="416" font-family="Arial" font-size="11" font-weight="700" letter-spacing="1.35" fill="#4e7188">769162 CANADA INC. · HAMILTON, ON</text>
+    <rect x="476" y="330" width="110" height="38" rx="8" fill="url(#chrome)"/>
+    <rect x="479" y="386" width="145" height="82" rx="8" fill="url(#chrome)"/>
+    <g stroke="#123a5a" stroke-width="6"><path d="M495 405h113M495 424h113M495 443h113"/></g>
+    <path d="M50 414h474v61H50z" fill="#0a2d47"/>
+    <circle cx="610" cy="398" r="13" fill="#f4c35d"/><rect x="66" y="437" width="54" height="18" rx="9" fill="#f4c35d"/>
+  </g>
+  <g fill="#071b2a" stroke="#e8f0f4" stroke-width="10">
+    <circle cx="270" cy="604" r="70"/><circle cx="414" cy="604" r="70"/><circle cx="824" cy="604" r="70"/><circle cx="968" cy="604" r="70"/><circle cx="1290" cy="604" r="76"/><circle cx="1496" cy="604" r="76"/>
+  </g>
+  <g fill="#8ea0aa" stroke="#fff" stroke-width="9"><circle cx="270" cy="604" r="29"/><circle cx="414" cy="604" r="29"/><circle cx="824" cy="604" r="29"/><circle cx="968" cy="604" r="29"/><circle cx="1290" cy="604" r="32"/><circle cx="1496" cy="604" r="32"/></g>
+  <path d="M1120 565h124v41h-124z" fill="url(#chrome)" stroke="#0b2f4b" stroke-width="6"/>
+</g>
+<rect width="1800" height="820" fill="url(#fade)" opacity="0"/>
+</svg>

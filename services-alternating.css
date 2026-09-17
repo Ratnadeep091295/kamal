@@ -1,0 +1,28 @@
+/* Approved alternating diagonals, retaining the editorial service-card system. */
+.services-alternating .ed-service-grid{display:flex;flex-direction:column;gap:56px;padding:0 20px 20px 0;margin-top:48px}
+.services-alternating .ed-service-card{position:relative;display:grid;grid-template-columns:49% minmax(0,1fr);align-items:center;width:91%;flex:none;scroll-margin-top:120px}
+.services-alternating .ed-service-card::before{inset:32px -20px -20px 32px}
+.services-alternating .ed-service-image{position:relative;grid-column:1;grid-row:1;height:100%;min-height:360px;aspect-ratio:auto;overflow:hidden}
+.services-alternating .ed-service-image>img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:center;image-rendering:auto}
+.services-alternating .ed-service-panel{position:relative;z-index:1;grid-column:2;grid-row:1;margin:24px 0 24px -24px;padding:36px;gap:22px;min-height:320px}
+.services-alternating .ed-service-panel::before{left:36px}
+.services-alternating .ed-service-panel h3{font-size:30px;line-height:1.16;min-height:0;max-width:22ch}
+.services-alternating .ed-service-panel>p{max-width:52ch;font-size:16px;line-height:1.7}
+.services-alternating .ed-card-action{margin-top:auto}
+.services-alternating .ed-service-card:nth-child(2){margin-left:9%;grid-template-columns:minmax(0,1fr) 49%}
+.services-alternating .ed-service-card:nth-child(2) .ed-service-image{grid-column:2}
+.services-alternating .ed-service-card:nth-child(2) .ed-service-panel{grid-column:1;margin:24px -24px 24px 0}
+@media(min-width:761px) and (max-width:1100px){
+ .services-alternating .ed-service-panel{padding:26px;gap:18px}
+ .services-alternating .ed-service-panel::before{left:26px}
+ .services-alternating .ed-service-panel h3{font-size:27px}
+}
+@media(max-width:760px){
+ .services-alternating .ed-service-grid{display:grid;grid-template-columns:1fr;gap:40px;padding:0 14px 14px 0;margin-top:32px}
+ .services-alternating .ed-service-card,.services-alternating .ed-service-card:nth-child(2){display:flex;flex-direction:column;align-items:stretch;width:100%;margin:0}
+ .services-alternating .ed-service-card::before{inset:16px -14px -14px 16px}
+ .services-alternating .ed-service-image{height:auto;min-height:0;aspect-ratio:1.5}
+ .services-alternating .ed-service-panel,.services-alternating .ed-service-card:nth-child(2) .ed-service-panel{margin:-24px 0 0 16px;padding:26px 22px 22px;gap:18px;min-height:0}
+ .services-alternating .ed-service-panel::before{left:22px}
+ .services-alternating .ed-service-panel h3{font-size:26px;max-width:20ch}
+}

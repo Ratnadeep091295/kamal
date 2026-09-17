@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" role="img" aria-labelledby="title desc">
+<title id="title">Map of 2559 Barton Street East, Hamilton</title><desc id="desc">A Google Maps inspired street map centred on Kamal Transport at 2559 Barton Street East.</desc>
+<rect width="1000" height="620" fill="#eef1ed"/>
+<g fill="#dce8d4" opacity=".85"><path d="M40 35h260v160H40zM708 24h252v166H708zM42 440h278v150H42zM730 426h230v164H730z"/></g>
+<g fill="#d9e7ef"><path d="M0 260C170 232 311 254 451 227c169-32 337-93 549-76v84c-182-12-337 40-502 73-165 33-315 9-498 40z"/></g>
+<g stroke="#fff" stroke-width="28" fill="none" stroke-linecap="round"><path d="M-40 420L1040 215"/><path d="M260 -40L455 660"/><path d="M760 -30L625 650"/><path d="M-40 113L1040 531"/></g>
+<g stroke="#c8c8c2" stroke-width="2" fill="none"><path d="M-40 420L1040 215"/><path d="M260 -40L455 660"/><path d="M760 -30L625 650"/><path d="M-40 113L1040 531"/></g>
+<path d="M-40 420L1040 215" stroke="#f6d374" stroke-width="14" fill="none"/>
+<g font-family="Arial, Helvetica, sans-serif" fill="#6d7778" font-size="18" font-weight="700"><text x="566" y="302" transform="rotate(-10 566 302)">Barton Street East</text><text x="345" y="278" transform="rotate(74 345 278)">Nash Road North</text><text x="665" y="389" transform="rotate(102 665 389)">Centennial Parkway</text><text x="112" y="153" transform="rotate(22 112 153)">Queenston Road</text></g>
+<g><path d="M530 245c-33 0-60 27-60 60 0 49 60 108 60 108s60-59 60-108c0-33-27-60-60-60z" fill="#1f75d6"/><circle cx="530" cy="305" r="20" fill="#fff"/></g>
+<g font-family="Arial, Helvetica, sans-serif"><rect x="584" y="250" width="320" height="118" rx="8" fill="#fff" stroke="#d7dadd"/><text x="612" y="293" font-size="24" font-weight="800" fill="#263238">Kamal Transport</text><text x="612" y="326" font-size="18" fill="#5f6a6e">2559 Barton Street East</text><text x="612" y="351" font-size="18" fill="#5f6a6e">Hamilton, Ontario</text></g>
+</svg>

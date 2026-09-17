@@ -1,0 +1,10 @@
+/* Compact subsection titles; photo coverage and tint remain in subsection-headers.css. */
+.editorial-mock .rf.rf-inner-hero{min-height:184px;height:auto;padding:24px 0 32px}
+.editorial-mock .rf-inner-hero h1{font-size:clamp(32px,3.2vw,44px);line-height:1.08}
+.editorial-mock .rf-inner-hero>.ed-title-curve{height:18px}
+.editorial-mock .rf-inner-hero .rf-breadcrumb{font-size:12px;line-height:1.5;margin-bottom:8px}
+@media(max-width:760px){
+ .editorial-mock .rf.rf-inner-hero{min-height:168px;height:auto;padding:16px 0 28px}
+ .editorial-mock .rf-inner-hero>.ed-title-curve{height:14px}
+ .editorial-mock .rf-inner-hero h1{font-size:clamp(27px,7.5vw,30px);line-height:1.08}
+}

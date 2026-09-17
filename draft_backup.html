@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamal Transport - Cinematic 3D Journey</title>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            background-color: #000;
+            font-family: 'Inter', sans-serif;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        #scroll-container {
+            position: relative;
+            z-index: 2;
+            height: 3000vh; /* Plenty of scroll room */
+            pointer-events: none;
+        }
+
+        #loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px 40px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #1c355e;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #mobile-fallback {
+            display: none;
+            height: 100vh;
+            width: 100%;
+            background-color: #1c355e;
+            color: white;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 1000;
+            position: relative;
+        }
+
+        @media (max-width: 1023px) {
+            #canvas-container,
+            #scroll-container,
+            #loading {
+                display: none !important;
+            }
+
+            #mobile-fallback {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="mobile-fallback">
+        <div>
+            <h2>Kamal Transport</h2>
+            <p>Please view on a desktop device to experience the 3D cinematic journey.</p>
+        </div>
+    </div>
+
+    <div id="loading">Loading 3D Assets (0%)...</div>
+
+    <div id="canvas-container"></div>
+
+    <div id="scroll-container"></div>
+
+    <!-- GSAP, Three.js, GLTFLoader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        if (window.innerWidth >= 1024) {
+            init3D();
+        }
+
+        function init3D() {
+            const container = document.getElementById('canvas-container');
+            const loadingEl = document.getElementById('loading');
+
+            // --- 1. Scene Setup ---
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color('#87CEEB'); // Beautiful blue sky
+            scene.fog = new THREE.Fog('#87CEEB', 50, 400); // Fog to hide horizon
+
+            // --- 2. Camera Setup ---
+            const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const cameraRig = new THREE.Group();
+            scene.add(cameraRig);
+            cameraRig.add(camera);
+
+            // --- 3. Renderer Setup ---
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.0;
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            container.appendChild(renderer.domElement);
+
+            // --- 4. Lighting ---
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+            scene.add(ambientLight);
+
+            const sunLight = new THREE.DirectionalLight(0xfff5e6, 1.5); // Warmer, more realistic sun
+            // Attach light to camera rig so shadows follow the truck cleanly without needing giant shadow maps
+            sunLight.position.set(100, 200, 50);
+            sunLight.castShadow = true;
+            sunLight.shadow.mapSize.width = 4096; // Higher resolution shadows
+            sunLight.shadow.mapSize.height = 4096;
+            sunLight.shadow.camera.near = 0.5;
+            sunLight.shadow.camera.far = 500;
+            sunLight.shadow.camera.left = -150;
+            sunLight.shadow.camera.right = 150;
+            sunLight.shadow.camera.top = 150;
+            sunLight.shadow.camera.bottom = -150;
+            sunLight.shadow.bias = -0.0001;
+            cameraRig.add(sunLight);
+            
+            // --- 4b. Textures ---
+            const textureLoader = new THREE.TextureLoader();
+            const texAsphalt = textureLoader.load('tex_asphalt.jpg');
+            texAsphalt.wrapS = THREE.RepeatWrapping;
+            texAsphalt.wrapT = THREE.RepeatWrapping;
+            texAsphalt.repeat.set(1, 200); // Stretch along the long tube
+
+            const texGround = textureLoader.load('tex_ground.jpg');
+            texGround.wrapS = THREE.RepeatWrapping;
+            texGround.wrapT = THREE.RepeatWrapping;
+            texGround.repeat.set(200, 200); // Massive tiling for the ground plane
+
+            const texSky = textureLoader.load('bg_06_forest.jpg');
+            texSky.wrapS = THREE.RepeatWrapping;
+            texSky.repeat.set(4, 1);
+
+            const texFacility = textureLoader.load('bg_02_loading_facility.jpg');
+
+            // --- 5. World Generation (Spline Path) ---
+            const curvePoints = [
+                new THREE.Vector3(0, 0, 0),         // Scene 1: Loading Facility
+                new THREE.Vector3(0, 0, -400),      // Scene 2: Straight
+                new THREE.Vector3(200, 0, -800),    // Scene 2: Curves Right
+                new THREE.Vector3(200, 0, -1200),   // Scene 3: Dumping Station (Straight)
+                new THREE.Vector3(-200, 0, -1600),  // Scene 5: Curves Left
+                new THREE.Vector3(-200, 0, -2000),  // Scene 5: Long Road Straight
+                new THREE.Vector3(0, 0, -2500)      // Scene 6: Final Loading Facility
+            ];
+            const curve = new THREE.CatmullRomCurve3(curvePoints);
+
+            // Huge ground plane
+            const groundGeo = new THREE.PlaneGeometry(8000, 8000);
+            const groundMat = new THREE.MeshStandardMaterial({ 
+                color: 0x8a927a, 
+                map: texGround,
+                roughness: 0.9,
+                metalness: 0.0
+            });
+            const ground = new THREE.Mesh(groundGeo, groundMat);
+            ground.rotation.x = -Math.PI / 2;
+            ground.position.y = -0.5;
+            ground.receiveShadow = true;
+            scene.add(ground);
+
+            // Skybox Cylinder (Photorealistic Horizon)
+            const skyGeo = new THREE.CylinderGeometry(2500, 2500, 1500, 64, 1, true);
+            const skyMat = new THREE.MeshBasicMaterial({ map: texSky, side: THREE.BackSide, fog: false });
+            const sky = new THREE.Mesh(skyGeo, skyMat);
+            sky.position.y = 300;
+            scene.add(sky);
+
+            // Generative Road Surface
+            const tubeGeo = new THREE.TubeGeometry(curve, 1000, 12, 8, false);
+            const roadMat = new THREE.MeshStandardMaterial({ 
+                color: 0x555555,
+                map: texAsphalt,
+                roughness: 0.8,
+                metalness: 0.1
+            });
+            const road = new THREE.Mesh(tubeGeo, roadMat);
+            road.scale.y = 0.01; // Flatten tube into a road
+            road.receiveShadow = true;
+            scene.add(road);
+
+            const lineGeo = new THREE.TubeGeometry(curve, 500, 0.25, 4, false);
+            const lineMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            const line = new THREE.Mesh(lineGeo, lineMat);
+            line.scale.y = 0.02; 
+            line.position.y = 0.1;
+            scene.add(line);
+
+            // Environment Generators
+            function spawnObjects(tStart, tEnd, count, factoryFunc) {
+                for(let i=0; i<count; i++) {
+                    const t = tStart + Math.random() * (tEnd - tStart);
+                    const pt = curve.getPointAt(t);
+                    const tangent = curve.getTangentAt(t);
+                    const normal = new THREE.Vector3(-tangent.z, 0, tangent.x).normalize();
+                    factoryFunc(pt, normal, tangent, t);
+                }
+            }
+
+            function createFacility(t) {
+                const pt = curve.getPointAt(t);
+                const tangent = curve.getTangentAt(t);
+                const normal = new THREE.Vector3(-tangent.z, 0, tangent.x).normalize();
+
+                const group = new THREE.Group();
+                group.position.copy(pt);
+                const target = pt.clone().add(tangent);
+                group.lookAt(target); // Align with road tangent
+
+                const padGeo = new THREE.PlaneGeometry(200, 200);
+                const padMat = new THREE.MeshStandardMaterial({ map: texAsphalt, color: 0x888888, roughness: 0.9 });
+                const pad = new THREE.Mesh(padGeo, padMat);
+                pad.rotation.x = -Math.PI / 2;
+                pad.position.y = -0.06;
+                pad.receiveShadow = true;
+                group.add(pad);
+
+                // Billboard of realistic facility
+                const bldgGeo = new THREE.PlaneGeometry(160, 90);
+                const bldgMat = new THREE.MeshBasicMaterial({ map: texFacility, transparent: true });
+                const bldg = new THREE.Mesh(bldgGeo, bldgMat);
+                bldg.position.set(60, 45, -20); // Offset right
+                // Make it face the road
+                bldg.lookAt(bldg.position.clone().add(new THREE.Vector3(0, 0, 1)));
+                group.add(bldg);
+                
+                for(let i=0; i<30; i++) {
+                    const crateGeo = new THREE.BoxGeometry(6, 6, 6);
+                    const crateMat = new THREE.MeshStandardMaterial({ color: 0x5a4d41, map: texGround, roughness: 1.0 });
+                    const crate = new THREE.Mesh(crateGeo, crateMat);
+                    crate.position.set(-50 + Math.random()*40, 3, -60 + Math.random()*120);
+                    crate.castShadow = true;
+                    crate.receiveShadow = true;
+                    group.add(crate);
+                }
+                scene.add(group);
+            }
+
+            // Facilities at start and end
+            createFacility(0);
+            createFacility(1);
+
+            // Trees along road
+            spawnObjects(0.1, 0.4, 120, (pt, normal) => {
+                const isLeft = Math.random() > 0.5;
+                const distance = 15 + Math.random() * 60;
+                const offset = normal.clone().multiplyScalar(isLeft ? distance : -distance);
+                const group = new THREE.Group();
+                group.position.copy(pt).add(offset);
+
+                const trunkGeo = new THREE.CylinderGeometry(0.5, 1.5, 10 + Math.random()*5);
+                const trunkMat = new THREE.MeshStandardMaterial({ color: 0x3a2511, roughness: 1.0 });
+                const trunk = new THREE.Mesh(trunkGeo, trunkMat);
+                trunk.position.y = 5;
+                trunk.castShadow = true;
+                group.add(trunk);
+
+                const leavesGeo = new THREE.ConeGeometry(6 + Math.random()*4, 15 + Math.random()*10, 5);
+                const leavesMat = new THREE.MeshStandardMaterial({ color: 0x1e4f24, map: texGround, roughness: 0.9 });
+                const leaves = new THREE.Mesh(leavesGeo, leavesMat);
+                leaves.position.y = 12 + Math.random()*4;
+                leaves.castShadow = true;
+                group.add(leaves);
+
+                // Add random rotation to make them look organic
+                group.rotation.y = Math.random() * Math.PI;
+
+                scene.add(group);
+            });
+
+            // Houses (Using facility billboard instead of plain boxes)
+            spawnObjects(0.1, 0.4, 8, (pt, normal, tangent) => {
+                const isLeft = Math.random() > 0.5;
+                const offset = normal.clone().multiplyScalar(isLeft ? 50 : -50);
+                
+                const houseGeo = new THREE.PlaneGeometry(60, 40);
+                const houseMat = new THREE.MeshBasicMaterial({ map: texFacility, transparent: true });
+                const house = new THREE.Mesh(houseGeo, houseMat);
+                
+                house.position.copy(pt).add(offset);
+                house.position.y = 20;
+                house.lookAt(house.position.clone().add(tangent)); // Face parallel to road
+                
+                scene.add(house);
+            });
+
+            // Dirt piles (Scene 3 is around t=0.5)
+            spawnObjects(0.45, 0.55, 15, (pt, normal) => {
+                const distance = 30 + Math.random() * 60;
+                const isLeft = Math.random() > 0.5;
+                const offset = normal.clone().multiplyScalar(isLeft ? distance : -distance);
+                const pile = new THREE.Mesh(
+                    new THREE.ConeGeometry(15 + Math.random()*15, 10 + Math.random()*15, 8),
+                    new THREE.MeshStandardMaterial({ color: 0x4a3b31, roughness: 1 })
+                );
+                pile.position.copy(pt).add(offset);
+                pile.position.y = 5;
+                pile.castShadow = true;
+                pile.receiveShadow = true;
+                scene.add(pile);
+            });
+
+            // More trees for the long road (Scene 5)
+            spawnObjects(0.65, 0.9, 150, (pt, normal) => {
+                const isLeft = Math.random() > 0.5;
+                const distance = 15 + Math.random() * 50;
+                const offset = normal.clone().multiplyScalar(isLeft ? distance : -distance);
+                const group = new THREE.Group();
+                group.position.copy(pt).add(offset);
+
+                const trunkGeo = new THREE.CylinderGeometry(0.5, 1.5, 10 + Math.random()*5);
+                const trunkMat = new THREE.MeshStandardMaterial({ color: 0x3a2511, roughness: 1.0 });
+                const trunk = new THREE.Mesh(trunkGeo, trunkMat);
+                trunk.position.y = 5;
+                trunk.castShadow = true;
+                group.add(trunk);
+
+                const leavesGeo = new THREE.ConeGeometry(6 + Math.random()*4, 15 + Math.random()*10, 5);
+                const leavesMat = new THREE.MeshStandardMaterial({ color: 0x1e4f24, map: texGround, roughness: 0.9 });
+                const leaves = new THREE.Mesh(leavesGeo, leavesMat);
+                leaves.position.y = 12 + Math.random()*4;
+                leaves.castShadow = true;
+                group.add(leaves);
+                
+                group.rotation.y = Math.random() * Math.PI;
+
+                scene.add(group);
+            });
+
+            // --- 6. Load Truck Model ---
+            const loader = new THREE.GLTFLoader();
+            let truckModel;
+            let truckSize;
+            let mixer;
+            const clock = new THREE.Clock();
+            const sceneState = { progress: 0 }; // Controlled by GSAP
+
+            loader.load(
+                '3d model/Meshy_AI_Character_output rigged.glb',
+                function (gltf) {
+                    loadingEl.style.display = 'none';
+                    truckModel = gltf.scene;
+
+                    truckModel.traverse((node) => {
+                        if (node.isMesh) {
+                            node.castShadow = true;
+                            node.receiveShadow = true;
+                            if (node.material) node.material.envMapIntensity = 1.0;
+                        }
+                    });
+
+                    const box = new THREE.Box3().setFromObject(truckModel);
+                    truckSize = box.getSize(new THREE.Vector3());
+                    const center = box.getCenter(new THREE.Vector3());
+
+                    truckModel.position.x += (truckModel.position.x - center.x);
+                    truckModel.position.y += (truckModel.position.y - center.y);
+                    truckModel.position.z += (truckModel.position.z - center.z);
+                    scene.add(truckModel);
+
+                    if (gltf.animations && gltf.animations.length > 0) {
+                        mixer = new THREE.AnimationMixer(truckModel);
+                        gltf.animations.forEach((clip) => {
+                            mixer.clipAction(clip).play();
+                        });
+                    }
+
+                    setupScrollAnimation(truckSize);
+                },
+                function (xhr) {
+                    const percent = Math.round((xhr.loaded / xhr.total) * 100);
+                    if (percent) loadingEl.innerText = `Loading 3D Assets (${percent}%)...`;
+                },
+                function (error) {
+                    console.error(error);
+                    loadingEl.innerText = 'Error loading model.';
+                }
+            );
+
+            // --- 7. GSAP ScrollTrigger Sequence ---
+            function setupScrollAnimation(size) {
+                const maxDim = Math.max(size.x, size.y, size.z);
+
+                // Initial camera rig configuration
+                const posChase = { x: 0, y: maxDim * 0.8, z: maxDim * 3.5 };
+                const posTop = { x: 0, y: maxDim * 5.0, z: maxDim * 0.5 }; 
+
+                camera.position.set(posChase.x, posChase.y, posChase.z);
+
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: "#scroll-container",
+                        start: "top top",
+                        end: "bottom bottom",
+                        scrub: 1,
+                    }
+                });
+
+                // Truck progresses along the spline
+                tl.to(sceneState, { progress: 0.999, ease: "none", duration: 10 }, "start");
+
+                // 5 to 6: Chase -> TopDown
+                tl.to(camera.position, { x: posTop.x, y: posTop.y, z: posTop.z, ease: "power1.inOut", duration: 1 }, "start+=5");
+                
+                // 8 to 9: TopDown -> Chase
+                tl.to(camera.position, { x: posChase.x, y: posChase.y, z: posChase.z, ease: "power1.inOut", duration: 1 }, "start+=8");
+            }
+
+            // --- 8. Render Loop ---
+            function animate() {
+                requestAnimationFrame(animate);
+
+                const delta = clock.getDelta();
+                if (mixer) {
+                    mixer.update(delta);
+                }
+
+                if (truckModel && truckSize) {
+                    const pt = curve.getPointAt(sceneState.progress);
+                    
+                    // Prevent looking past the curve bounds
+                    const lookT = Math.min(sceneState.progress + 0.01, 1);
+                    const lookPt = curve.getPointAt(lookT);
+                    
+                    truckModel.position.copy(pt);
+                    truckModel.position.y = truckSize.y / 2;
+                    
+                    // Steer the truck along the path
+                    truckModel.lookAt(lookPt);
+                    truckModel.rotateY(Math.PI); // Correct the 180-deg backward model
+
+                    // Smoothly follow with camera rig
+                    cameraRig.position.lerp(pt, 0.1);
+                    const tangent = curve.getTangentAt(sceneState.progress);
+                    cameraRig.lookAt(cameraRig.position.clone().add(tangent));
+
+                    // Have the camera constantly look at the truck's local center
+                    const truckCenterLocal = new THREE.Vector3(0, truckSize.y / 2, 0);
+                    const truckCenterWorld = cameraRig.localToWorld(truckCenterLocal);
+                    camera.lookAt(truckCenterWorld);
+                }
+
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // --- 9. Window Resize Handling ---
+            window.addEventListener('resize', onWindowResize, false);
+            function onWindowResize() {
+                if (window.innerWidth < 1024) {
+                    document.getElementById('mobile-fallback').style.display = 'flex';
+                    container.style.display = 'none';
+                } else {
+                    document.getElementById('mobile-fallback').style.display = 'none';
+                    container.style.display = 'block';
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

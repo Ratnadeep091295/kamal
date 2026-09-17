@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamal Transport - Journey</title>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            background-color: #f8f9fa;
+            /* White/Light Grey background */
+            font-family: 'Inter', sans-serif;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        #scroll-container {
+            position: relative;
+            z-index: 2;
+            height: 10000px;
+            /* Long journey */
+            pointer-events: none;
+        }
+
+        #loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px 40px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #1c355e;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Overlay UI Sections */
+        .section {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            padding: 0 10vw;
+            /* Base side padding */
+            color: #1c355e;
+            pointer-events: none;
+        }
+
+        .logo {
+            width: 180px;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .section h1 {
+            font-size: clamp(2.5rem, 3.5vw, 4rem);
+            font-weight: 800;
+            margin: 0;
+            line-height: 0.98;
+            text-transform: uppercase;
+            letter-spacing: -2.5px;
+
+            /* Premium blue gradient */
+            background: linear-gradient(135deg,
+                    #071a33 0%,
+                    #123b68 45%,
+                    #3f6f9f 100%);
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+
+            /* Soft depth */
+            text-shadow:
+                0 2px 3px rgba(10, 31, 58, 0.08),
+                0 12px 30px rgba(10, 31, 58, 0.12);
+
+            /* Animation starting state */
+            opacity: 0;
+            transform: translateY(40px);
+
+            /* Slightly smoother rendering */
+            -webkit-font-smoothing: antialiased;
+            text-rendering: geometricPrecision;
+        }
+
+
+        .section p {
+            font-size: clamp(1rem, 1.3vw, 1.25rem);
+            max-width: 460px;
+
+            margin-top: 22px;
+            margin-bottom: 0;
+
+            font-weight: 450;
+            line-height: 1.7;
+            letter-spacing: 0.3px;
+
+            color: #36516f;
+
+            /* Subtle readability */
+            text-shadow: 0 1px 8px rgba(255, 255, 255, 0.7);
+
+            /* Animation starting state */
+            opacity: 0;
+            transform: translateY(40px);
+
+            -webkit-font-smoothing: antialiased;
+        }
+
+        #sec-1 {
+            top: 0vh;
+            justify-content: flex-end;
+            align-items: flex-start;
+            text-align: left;
+            padding-bottom: 15vh;
+        }
+
+        #sec-2 {
+            top: 2000px;
+            justify-content: flex-start;
+            align-items: flex-end;
+            text-align: right;
+            padding-top: 15vh;
+        }
+
+        #sec-3 {
+            top: 4000px;
+            justify-content: flex-end;
+            align-items: flex-start;
+            text-align: left;
+            padding-bottom: 15vh;
+        }
+
+        #sec-4 {
+            top: 6000px;
+            justify-content: flex-start;
+            align-items: flex-end;
+            text-align: right;
+            padding-top: 15vh;
+        }
+
+        #sec-5 {
+            top: auto;
+            bottom: 0;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            padding-top: 10vh;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="loading">Loading 3D Assets...</div>
+
+    <div id="canvas-container"></div>
+
+    <div id="scroll-container">
+        <!-- Text overlays -->
+        <div id="sec-1" class="section">
+            <h1>Reliability<br>At Every<br>Milestone</h1>
+            <p>From the first mile to the last.</p>
+        </div>
+        <div id="sec-2" class="section">
+            <h1>Loading<br>Efficiency</h1>
+            <p>Ready to move your heaviest cargo.</p>
+        </div>
+        <div id="sec-3" class="section">
+            <h1>Global<br>Network</h1>
+            <p>Travelling through major trade corridors.</p>
+        </div>
+        <div id="sec-4" class="section">
+            <h1>Unloading<br>Precision</h1>
+            <p>Walking-floor technology for safe, fast discharge.</p>
+        </div>
+        <div id="sec-5" class="section">
+            <img src="assets/logo-classic.webp" alt="Kamal Transport Logo" class="logo">
+            <h1>Waste &amp; Bulk Hauling.</h1>
+            <p>Ontario &middot; Michigan &middot; Seven-day operations</p>
+        </div>
+    </div>
+
+    <!-- GSAP, Three.js, Loaders -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
+
+    <script>
+        window.addEventListener('error', function (e) {
+            const loading = document.getElementById('loading');
+            if (loading) loading.innerHTML += '<br><span style="color:red">Error: ' + e.message + ' at line ' + e.lineno + '</span>';
+        });
+    </script>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        if (window.innerWidth >= 1024) {
+            init3D();
+        }
+        function createRoadTexture(renderer) {
+            const canvas = document.createElement('canvas');
+
+            // Texture dimensions (smaller resolution for natural anti-aliasing)
+            canvas.width = 256;
+            canvas.height = 1024;
+
+            const ctx = canvas.getContext('2d');
+
+            // ==========================================
+            // 1. ASPHALT BASE
+            // ==========================================
+
+            ctx.fillStyle = '#202020';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // ==========================================
+            // 4. LEFT YELLOW EDGE LINE
+            // ==========================================
+
+            ctx.fillStyle = '#dcb640';
+
+            const edgeDist = 6;
+            const edgeWidth = 3;
+
+            ctx.fillRect(edgeDist, 0, edgeWidth, canvas.height);
+
+            // ==========================================
+            // 5. RIGHT YELLOW EDGE LINE
+            // ==========================================
+
+            ctx.fillRect(
+                canvas.width - edgeDist - edgeWidth,
+                0,
+                edgeWidth,
+                canvas.height
+            );
+
+            // ==========================================
+            // 6. CENTER WHITE DASHED LINE
+            // ==========================================
+
+            ctx.fillStyle = '#eeeeee';
+
+            const centerX = canvas.width / 2;
+
+            const dashWidth = 6;
+            const dashLength = 250;
+            const dashGap = 250;
+
+            for (
+                let y = 0;
+                y < canvas.height;
+                y += dashLength + dashGap
+            ) {
+
+                ctx.fillRect(
+                    centerX - dashWidth / 2,
+                    y,
+                    dashWidth,
+                    dashLength
+                );
+            }
+
+
+            // ==========================================
+            // 7. THREE.JS TEXTURE
+            // ==========================================
+
+            const texture = new THREE.CanvasTexture(canvas);
+
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+
+            // Repeat along road length
+            texture.repeat.set(1, 20);
+
+            // Three.js r128 uses encoding
+            texture.encoding = THREE.sRGBEncoding;
+
+            // Anisotropic filtering
+            if (renderer) {
+                texture.anisotropy =
+                    renderer.capabilities.getMaxAnisotropy();
+            }
+
+            texture.needsUpdate = true;
+
+            return texture;
+        }
+
+        function init3D() {
+            const container = document.getElementById('canvas-container');
+            const loadingEl = document.getElementById('loading');
+
+            // --- 1. Scene Setup ---
+            const scene = new THREE.Scene();
+            // Create Gradient Sky
+            const skyCanvas = document.createElement('canvas');
+            skyCanvas.width = 2;
+            skyCanvas.height = 512;
+            const skyCtx = skyCanvas.getContext('2d');
+            const skyGrad = skyCtx.createLinearGradient(0, 0, 0, 512);
+            skyGrad.addColorStop(0, '#dbe9f4'); // Premium cool-grey light
+            skyGrad.addColorStop(1, '#f8f9fa'); // Almost white at horizon
+            skyCtx.fillStyle = skyGrad;
+            skyCtx.fillRect(0, 0, 2, 512);
+            const skyTex = new THREE.CanvasTexture(skyCanvas);
+            skyTex.encoding = THREE.sRGBEncoding;
+            scene.background = skyTex;
+
+            // Create Gradient Ground
+            const groundCanvas = document.createElement('canvas');
+            groundCanvas.width = 512;
+            groundCanvas.height = 512;
+            const groundCtx = groundCanvas.getContext('2d');
+            const groundGrad = groundCtx.createRadialGradient(256, 256, 0, 256, 256, 256);
+            groundGrad.addColorStop(0, '#d1d8df'); // Lighter slate at center
+            groundGrad.addColorStop(1, '#a6b3c0'); // Darker corporate grey at edges
+            groundCtx.fillStyle = groundGrad;
+            groundCtx.fillRect(0, 0, 512, 512);
+            const groundTex = new THREE.CanvasTexture(groundCanvas);
+            groundTex.encoding = THREE.sRGBEncoding;
+
+            // Add minimal ground plane with corporate slate gradient
+            const groundGeo = new THREE.PlaneGeometry(15000, 15000);
+            const groundMat = new THREE.MeshStandardMaterial({
+                map: groundTex,
+                roughness: 1.0,
+                metalness: 0.0
+            });
+            const groundMesh = new THREE.Mesh(groundGeo, groundMat);
+            groundMesh.rotation.x = -Math.PI / 2;
+            groundMesh.position.y = -0.5; // Just below the road
+            groundMesh.receiveShadow = true;
+            scene.add(groundMesh);
+
+            // --- 2. Camera Setup ---
+            const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 10, 5000);
+            const cameraRig = new THREE.Group();
+            scene.add(cameraRig);
+            cameraRig.add(camera);
+
+            // --- 3. Renderer Setup ---
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            container.appendChild(renderer.domElement);
+
+            // --- 4. Lighting ---
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+            scene.add(ambientLight);
+
+            const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+            dirLight.position.set(100, 300, 100);
+            dirLight.castShadow = true;
+            dirLight.shadow.mapSize.width = 2048;
+            dirLight.shadow.mapSize.height = 2048;
+            dirLight.shadow.camera.near = 0.5;
+            dirLight.shadow.camera.far = 1000;
+            const d = 300;
+            dirLight.shadow.camera.left = -d;
+            dirLight.shadow.camera.right = d;
+            dirLight.shadow.camera.top = d;
+            dirLight.shadow.camera.bottom = -d;
+            scene.add(dirLight);
+
+            // --- 5. Road Generation ---
+            // Create a long curving path
+            const curve = new THREE.CatmullRomCurve3([
+                new THREE.Vector3(0, 0, 0),             // Start (Scene 1)
+                new THREE.Vector3(-200, 0, -400),       // Loading Site (Scene 2)
+                new THREE.Vector3(-500, 0, -1000),      // Curve
+                new THREE.Vector3(200, 0, -1800),       // Curve
+                new THREE.Vector3(500, 0, -2500),       // Waste Facility (Scene 4)
+                new THREE.Vector3(0, 0, -3200)          // End (Scene 5)
+            ]);
+
+            function createRoadGeometry(curve, segments, width) {
+                const geometry = new THREE.BufferGeometry();
+                const vertices = [];
+                const uvs = [];
+                const indices = [];
+                const points = curve.getPoints(segments);
+
+                // Extend road far past start and end so it doesn't suddenly appear/disappear
+                const firstTangent = new THREE.Vector3().subVectors(points[1], points[0]).normalize();
+                const pStart = points[0].clone().addScaledVector(firstTangent, -2000);
+
+                const lastTangent = new THREE.Vector3().subVectors(points[points.length - 1], points[points.length - 2]).normalize();
+                const pEnd = points[points.length - 1].clone().addScaledVector(lastTangent, 2000);
+
+                points.unshift(pStart);
+                points.push(pEnd);
+
+                const totalPoints = points.length;
+
+                for (let i = 0; i < totalPoints; i++) {
+                    const p = points[i];
+
+                    let tangent;
+                    if (i === 0) tangent = firstTangent;
+                    else if (i === totalPoints - 1) tangent = lastTangent;
+                    else tangent = curve.getTangent((i - 1) / segments);
+
+                    tangent.y = 0;
+                    tangent.normalize();
+
+                    const normal = new THREE.Vector3(0, 1, 0);
+                    const binormal = new THREE.Vector3().crossVectors(tangent, normal).normalize();
+
+                    const pLeft = p.clone().add(binormal.clone().multiplyScalar(-width / 2));
+                    const pRight = p.clone().add(binormal.clone().multiplyScalar(width / 2));
+                    pLeft.y = 0;
+                    pRight.y = 0;
+
+                    vertices.push(pLeft.x, pLeft.y, pLeft.z);
+                    vertices.push(pRight.x, pRight.y, pRight.z);
+
+                    // UV mapping (distribute evenly)
+                    const v = i / (totalPoints - 1);
+                    uvs.push(0, v);
+                    uvs.push(1, v);
+                }
+
+                for (let i = 0; i < totalPoints - 1; i++) {
+                    const a = i * 2;
+                    const b = i * 2 + 1;
+                    const c = (i + 1) * 2;
+                    const d = (i + 1) * 2 + 1;
+                    indices.push(a, c, b);
+                    indices.push(b, c, d);
+                }
+
+                geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+                geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+                geometry.setIndex(indices);
+                geometry.computeVertexNormals();
+                return geometry;
+            }
+
+            const roadTexture = createRoadTexture(renderer);
+            const roadGeom = createRoadGeometry(curve, 1000, 40); // Reduced road width to 40
+
+            const roadMat = new THREE.MeshStandardMaterial({
+                map: roadTexture,
+                roughness: 0.9,
+                metalness: 0.1,
+                side: THREE.DoubleSide
+            });
+            const roadMesh = new THREE.Mesh(roadGeom, roadMat);
+            roadMesh.receiveShadow = true;
+            roadMesh.position.y = 0.1; // Slightly above ground
+            scene.add(roadMesh);
+
+
+            // --- 6. Coal Meshes (Programmatic) ---
+            // Coal inside trailer (scaled way down so it doesn't hide the truck)
+            const coalGeo = new THREE.BoxGeometry(4, 1.5, 10);
+            const coalMat = new THREE.MeshStandardMaterial({ color: 0x555555, roughness: 0.9 }); // Gray pile
+            const internalCoal = new THREE.Mesh(coalGeo, coalMat);
+            internalCoal.position.set(0, 20, 0);
+            // We will attach this to the truck once it loads
+
+            // --- 6. The Dumping Element (Coal Pile) ---
+            const pileGeom = new THREE.DodecahedronGeometry(25, 0);
+            const pileMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.9 });
+            const groundCoal = new THREE.Mesh(pileGeom, pileMat);
+            groundCoal.castShadow = true;
+            groundCoal.receiveShadow = true;
+
+            const unloadPoint = curve.getPointAt(0.78); // Approx near index 4
+            groundCoal.position.copy(unloadPoint);
+            groundCoal.position.y = 5;
+            // Shift it slightly backwards so it sits neatly near the truck back
+            const unloadTangent = curve.getTangentAt(0.78);
+            groundCoal.position.addScaledVector(unloadTangent, -90);
+            groundCoal.scale.set(0, 0, 0); // Starts empty
+            scene.add(groundCoal);
+
+            // --- 7. Load Models ---
+            const loader = new THREE.GLTFLoader();
+            const objLoader = new THREE.OBJLoader();
+            const textureLoader = new THREE.TextureLoader();
+
+            let truckModel, jcbModel;
+            let truckSize;
+            let mixer;
+            let gltfAnimations = [];
+
+            // State for GSAP
+            const sceneState = {
+                progress: 0,
+                camRadius: 150,
+                camHeight: 50,
+                camTheta: Math.PI / 2, // Side view initially
+                camLookY: 0, // Vertical look offset to frame the truck lower
+                camPanForward: 0, // Forward offset for cinematic panning
+                animProgress: 0, // Truck mechanical animations
+                coalScale: 1, // Full coal inside
+                pileScale: 0, // Empty pile outside
+                jcbDist: 100 // Distance of JCB from truck
+            };
+
+            let assetsLoaded = 0;
+            function checkLoad() {
+                assetsLoaded++;
+                if (assetsLoaded === 2) {
+                    loadingEl.style.display = 'none';
+                    setupScrollAnimation();
+                }
+            }
+
+            window.clock = new THREE.Clock();
+
+            loader.load(
+                '3d model/Truck Anim_04.glb',
+                function (gltf) {
+                    truckModel = gltf.scene;
+
+                    truckModel.traverse((node) => {
+                        if (node.isMesh) {
+                            node.castShadow = true;
+                            node.receiveShadow = true;
+                            if (node.material) node.material.envMapIntensity = 1.0;
+                        }
+                    });
+
+                    const box = new THREE.Box3().setFromObject(truckModel);
+                    let size = box.getSize(new THREE.Vector3());
+                    let center = box.getCenter(new THREE.Vector3());
+
+                    // Normalize Truck Scale so it is always exactly 100 units long (prevents camera clipping bugs)
+                    const maxRawDim = Math.max(size.x, size.y, size.z);
+                    const targetScale = 100 / maxRawDim;
+                    truckModel.scale.set(targetScale, targetScale, targetScale);
+
+                    // Re-calculate after scaling
+                    box.setFromObject(truckModel);
+                    truckSize = box.getSize(new THREE.Vector3());
+                    center = box.getCenter(new THREE.Vector3());
+
+                    // Center pivot
+                    truckModel.position.x = -center.x;
+                    truckModel.position.y = -center.y + (truckSize.y / 2);
+                    truckModel.position.z = -center.z;
+                    truckModel.rotation.y = Math.PI / 2;
+
+                    const truckContainer = new THREE.Group();
+                    truckContainer.add(truckModel);
+
+                    // Add internal coal to trailer
+                    internalCoal.position.set(0, 15, -10); // Adjust to sit inside Deloupe trailer
+                    truckContainer.add(internalCoal);
+
+                    scene.add(truckContainer);
+                    truckModel = truckContainer; // Reassign reference so rig follows container
+
+                    if (gltf.animations && gltf.animations.length > 0) {
+                        mixer = new THREE.AnimationMixer(gltf.scene);
+                        const clip = gltf.animations[0];
+                        sceneState.maxAnimDuration = clip.duration;
+
+                        const action = mixer.clipAction(clip);
+                        action.play();
+                    }
+
+                    checkLoad();
+                }
+            );
+
+            // Load JCB
+            const jcbMat = new THREE.MeshStandardMaterial({
+                map: textureLoader.load('3d model/JCB truck/texture_diffuse.png'),
+                normalMap: textureLoader.load('3d model/JCB truck/texture_normal.png'),
+                roughnessMap: textureLoader.load('3d model/JCB truck/texture_roughness.png'),
+                metalnessMap: textureLoader.load('3d model/JCB truck/texture_metallic.png'),
+                color: 0xffffff
+            });
+
+            objLoader.load(
+                '3d model/JCB truck/base.obj',
+                function (obj) {
+                    jcbModel = obj;
+                    jcbModel.traverse((node) => {
+                        if (node.isMesh) {
+                            node.material = jcbMat;
+                            node.castShadow = true;
+                            node.receiveShadow = true;
+                        }
+                    });
+
+                    const box = new THREE.Box3().setFromObject(jcbModel);
+                    const size = box.getSize(new THREE.Vector3());
+                    const center = box.getCenter(new THREE.Vector3());
+
+                    // Normalize scale to match the normalized truck (truck is ~100 max, JCB should be ~25 high)
+                    const scale = 25 / size.y;
+                    jcbModel.scale.set(scale, scale, scale);
+                    jcbModel.position.y = (-center.y * scale) + (size.y * scale / 2);
+
+                    scene.add(jcbModel);
+                    checkLoad();
+                }
+            );
+
+            // --- 8. GSAP ScrollTrigger Sequence ---
+            function setupScrollAnimation() {
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: "#scroll-container",
+                        start: "top top",
+                        end: "bottom bottom",
+                        scrub: 1,
+                    }
+                });
+
+                const maxDim = Math.max(truckSize.x, truckSize.y, truckSize.z);
+                // Zoom camera in significantly (cover 50% screen)
+                const baseCamRadius = maxDim * 1.5;
+                const baseCamHeight = maxDim * 0.4;
+
+                // Setup Initial State (Scene 1: Hero Side Profile)
+                sceneState.camTheta = Math.PI / 2; // Side
+                sceneState.camHeight = baseCamHeight;
+                sceneState.camRadius = baseCamRadius;
+
+                // --- SCENE 1 to 2: Drive to Loading Site ---
+                // Tween animProgress further so wheels spin visibly
+                tl.to(sceneState, { progress: 0.15, animProgress: 0.4, ease: "power2.inOut", duration: 3 }, "start");
+
+                // JCB comes in to load
+                tl.to(sceneState, { jcbDist: 30, ease: "power2.out", duration: 1 }, "start+=2");
+
+                // Camera does Circular Motion around truck during loading (orbit 360 degrees)
+                tl.to(sceneState, {
+                    camTheta: (Math.PI / 2) + (Math.PI * 2), // Orbit full circle
+                    ease: "power1.inOut",
+                    duration: 3
+                }, "start+=3");
+
+                tl.to(sceneState, { jcbDist: 100, ease: "power2.in", duration: 1 }, "start+=6"); // JCB leaves
+
+                // --- SCENE 2 to 3: The Graphic Journey (United Carriers style) ---
+                // Camera shifts to high Back-Left isometric view
+                tl.to(sceneState, {
+                    camTheta: 2.75 * Math.PI, // Back-Left isometric
+                    camHeight: maxDim * 2.5, // High top-down
+                    camRadius: maxDim * 2.0,
+                    ease: "power2.inOut",
+                    duration: 2
+                }, "start+=7");
+
+                // Truck drives long distance
+                tl.to(sceneState, { progress: 0.78, animProgress: 0.78, ease: "none", duration: 6 }, "start+=8");
+
+                // --- SCENE 3 to 4: Unloading at Waste Facility ---
+                // Camera orbits to the BACKSIDE of the truck to show the unloading process
+                tl.to(sceneState, {
+                    camTheta: 3.0 * Math.PI, // Perfectly behind the truck
+                    camHeight: maxDim * 1.0, // Lower down to look straight at the doors
+                    camRadius: maxDim * 2.5, // Far enough back to see the dump pile
+                    ease: "power2.inOut",
+                    duration: 2
+                }, "start+=13");
+
+                // Mechanical animations trigger (doors open fully BEFORE coal drops)
+                // Use 0.999 instead of 1.0 to prevent Three.js mixer from wrapping the loop back to 0!
+                tl.to(sceneState, { animProgress: 0.999, ease: "none", duration: 1.5 }, "start+=13.5");
+
+                // Coal simulation: internal coal shrinks, ground pile grows
+                tl.to(sceneState, { coalScale: 0.1, ease: "none", duration: 3 }, "start+=15.5");
+                tl.to(sceneState, { pileScale: 1.0, ease: "none", duration: 3 }, "start+=15.5");
+
+                // --- SCENE 4 to 5: Pause, Setup Camera, Drive to End ---
+                // Close the doors before driving off!
+                tl.to(sceneState, { animProgress: 0.78, ease: "none", duration: 1 }, "start+=18.5");
+
+                // --- PAUSE & SETUP SHOT ---
+                // During a 1.5 second pause (18.5 to 20.0), we orbit the camera to the left side and push it forward
+                tl.to(sceneState, {
+                    camTheta: 3.5 * Math.PI, // Left side of truck (truck points right)
+                    camHeight: baseCamHeight,
+                    camRadius: baseCamRadius,
+                    camLookY: maxDim * 0.4, // Tilt camera UP slightly to push the truck into the bottom third
+                    camPanForward: 250, // Push camera forward down the road (less distance so it appears faster)
+                    ease: "power2.inOut",
+                    duration: 1.5
+                }, "start+=18.5");
+
+                // --- FINAL DRIVE ---
+                // Now from 20.0 to 23.0, the truck physically drives into the frame!
+                tl.fromTo(sceneState,
+                    { animProgress: 0 },
+                    { animProgress: 0.78, ease: "power2.inOut", duration: 3 },
+                    "start+=20.0"
+                );
+                tl.to(sceneState, { progress: 1.0, ease: "power2.inOut", duration: 3 }, "start+=20.0");
+                
+                // At the same time, camera pan tweens back to 0 so the truck catches up to the focus point!
+                tl.to(sceneState, { camPanForward: 0, ease: "power2.inOut", duration: 3 }, "start+=20.0");
+
+                // --- FINAL LOGO REVEAL ---
+                // Fades in the logo and text sequentially AFTER the truck arrives at the end
+                tl.to("#sec-5 .logo", { opacity: 1, y: 0, duration: 1, ease: "power2.out" }, "start+=22.5");
+                tl.to("#sec-5 h1", { opacity: 1, y: 0, duration: 1, ease: "power2.out" }, "start+=23.0");
+                tl.to("#sec-5 p", { opacity: 1, y: 0, duration: 1, ease: "power2.out" }, "start+=23.5");
+
+                // --- TEXT ANIMATIONS (Premium Vertical Fade-Up) ---
+                const sections = document.querySelectorAll('.section');
+                sections.forEach((sec, i) => {
+                    if (sec.id === 'sec-5') return; // Skip sec-5, it's handled by the main timeline above!
+                    
+                    gsap.to(sec.querySelectorAll('h1, p'), {
+                        scrollTrigger: {
+                            trigger: sec,
+                            start: "top 60%", // Triggers nicely as you scroll down
+                            toggleActions: "play reverse play reverse"
+                        },
+                        opacity: 1,
+                        y: 0,
+                        duration: 1.2,
+                        stagger: 0.15,
+                        ease: "power3.out"
+                    });
+                });
+            }
+
+            // --- 9. Render Loop ---
+            const truckPos = new THREE.Vector3();
+            const truckTangent = new THREE.Vector3();
+            const jcbPos = new THREE.Vector3();
+
+            function animate() {
+                requestAnimationFrame(animate);
+
+                if (truckModel) {
+                    // Update Truck Position along curve
+                    curve.getPointAt(sceneState.progress, truckPos);
+                    curve.getTangentAt(sceneState.progress, truckTangent);
+
+                    truckModel.position.copy(truckPos);
+
+                    // Make truck look along the curve
+                    const lookAtTarget = truckPos.clone().add(truckTangent);
+                    truckModel.lookAt(lookAtTarget);
+
+                    // Update Camera Position relative to Truck
+                    // Theta is relative to the truck's forward tangent
+                    const angle = Math.atan2(truckTangent.x, truckTangent.z); // Current yaw of truck
+                    const finalTheta = angle + sceneState.camTheta;
+
+                    camera.position.x = truckPos.x + (Math.sin(finalTheta) * sceneState.camRadius);
+                    camera.position.z = truckPos.z + (Math.cos(finalTheta) * sceneState.camRadius);
+                    camera.position.y = truckPos.y + sceneState.camHeight;
+
+                    // Cinematic forward pan
+                    const panOffset = truckTangent.clone().multiplyScalar(sceneState.camPanForward);
+                    camera.position.add(panOffset);
+
+                    // Look at the truck, but slightly forward so it's not perfectly centered in top-down
+                    const camLook = truckPos.clone().add(truckTangent.clone().multiplyScalar(50));
+                    camLook.add(panOffset);
+                    camLook.y += sceneState.camLookY; // Add vertical offset for final framing
+                    camera.lookAt(camLook);
+
+                    // Update Coal Scales
+                    internalCoal.scale.z = sceneState.coalScale;
+                    // Move internal coal backwards as it shrinks to simulate conveyor
+                    internalCoal.position.z = -10 + (1 - sceneState.coalScale) * -40;
+
+                    groundCoal.scale.set(sceneState.pileScale, sceneState.pileScale, sceneState.pileScale);
+
+                    // Update JCB Position (Positioned near the loading site at progress = 0.15)
+                    if (jcbModel) {
+                        const loadPoint = curve.getPointAt(0.15);
+                        const loadTangent = curve.getTangentAt(0.15);
+
+                        // JCB offset perpendicular to road
+                        const rightVec = new THREE.Vector3(-loadTangent.z, 0, loadTangent.x);
+                        jcbPos.copy(loadPoint).add(rightVec.multiplyScalar(sceneState.jcbDist));
+
+                        jcbModel.position.copy(jcbPos);
+                        jcbModel.lookAt(loadPoint);
+                    }
+
+                    // Map the entire baked animation to the custom animProgress
+                    if (mixer && sceneState.maxAnimDuration > 0) {
+                        // animProgress decouples the mechanical animations from the truck's physical progress
+                        mixer.setTime(sceneState.animProgress * sceneState.maxAnimDuration);
+                    }
+                }
+
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // --- 10. Resize ---
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+    </script>
+</body>
+
+</html>

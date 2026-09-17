@@ -1,0 +1,97 @@
+/* Clear Sequence candidate using the supplied slate palette. */
+.cs-palette{--pal-900:#0D1B2A;--pal-800:#1B263B;--pal-600:#415A77;--pal-400:#778DA9;--pal-100:#E0E1DD}
+.cs-palette .hx-seam{height:7px;background:linear-gradient(90deg,var(--pal-900) 0 28%,var(--pal-800) 28% 57%,var(--pal-600) 57% 79%,var(--pal-400) 79% 94%,var(--gold) 94%)}
+
+/* Services — a clean white field with navy structure. */
+.cs-palette .hx-services{padding-top:60px;background:#fff;color:var(--pal-900)}
+.cs-palette .hx-intro h2{color:var(--pal-900)}
+.cs-palette .hx-service-title h3{color:var(--pal-900)}
+.cs-palette .hx-intro .rf-section-head>p{color:#415A77}
+.cs-palette .hx-services .rf-eyebrow{color:var(--pal-600)!important}
+.cs-palette .hx-cards{grid-template-columns:1.08fr .92fr;grid-template-rows:repeat(2,minmax(190px,1fr));gap:12px;border:0;background:transparent}
+.cs-palette .hx-card{min-height:0;border:1px solid #778DA9;background:#fff;box-shadow:0 10px 24px rgba(13,27,42,.08)}
+.cs-palette .hx-card:first-child{grid-row:1/span 2;min-height:420px}
+.cs-palette .hx-card-inner{position:relative;display:flex;flex-direction:column;min-height:100%;padding:25px 116px 24px 25px}
+.cs-palette .hx-card:first-child .hx-card-inner{padding:32px}
+.cs-palette .hx-media-placeholder{position:absolute;right:22px;top:68px;width:72px;height:54px;overflow:hidden;border:1px solid #9eacb8;background:linear-gradient(145deg,#eef1f2,var(--pal-400))}
+.cs-palette .hx-card:first-child .hx-media-placeholder{right:32px;top:32px;width:160px;height:96px;background:linear-gradient(118deg,#eef1f2,var(--pal-400))}
+.cs-palette .hx-card:nth-child(2) .hx-media-placeholder{background:linear-gradient(145deg,#f4f5f3,#9bacc0)}
+.cs-palette .hx-card:nth-child(3) .hx-media-placeholder{background:linear-gradient(145deg,#e7ebeb,var(--pal-400))}
+.cs-palette .hx-media-placeholder:before{content:"";position:absolute;left:-24%;right:-12%;bottom:20%;height:48%;border-top:2px solid rgba(13,27,42,.42);border-radius:50%;transform:rotate(-5deg)}
+.cs-palette .hx-media-placeholder:after{content:"";position:absolute;left:-16%;right:-18%;bottom:11%;height:45%;border-top:1px solid rgba(212,164,75,.75);border-radius:50%;transform:rotate(-5deg)}
+.cs-palette .hx-media-placeholder span{position:absolute;left:50%;top:50%;width:30px;height:24px;transform:translate(-50%,-50%);border:1px solid rgba(13,27,42,.58)}
+.cs-palette .hx-card:first-child .hx-media-placeholder span{width:38px;height:30px}
+.cs-palette .hx-media-placeholder span:before{content:"";position:absolute;left:6px;top:5px;width:6px;height:6px;border:1px solid rgba(13,27,42,.7);border-radius:50%}
+.cs-palette .hx-media-placeholder span:after{content:"";position:absolute;left:5px;right:5px;bottom:4px;height:9px;background:rgba(13,27,42,.3);clip-path:polygon(0 100%,35% 30%,54% 63%,72% 45%,100% 100%)}
+.cs-palette .hx-card:not(:first-child) .hx-card-top{margin-bottom:13px}
+.cs-palette .hx-card:not(:first-child) .hx-service-title h3{font-size:24px}
+.cs-palette .hx-card:not(:first-child) .hx-service-copy{max-width:360px}
+.cs-palette .hx-card:not(:first-child) .rf-link{margin-top:auto}
+.cs-palette .hx-card:first-child .hx-service-title h3{font-size:34px}
+.cs-palette .hx-card:first-child .hx-card-top,.cs-palette .hx-card:first-child .hx-service-title,.cs-palette .hx-card:first-child .hx-service-copy{max-width:58%}
+.cs-palette .hx-card:first-child .hx-service-title{margin-top:auto}
+.cs-palette .hx-card:nth-child(2){background:#fff}
+.cs-palette .hx-card:before{background:var(--pal-600)}
+.cs-palette .hx-card:nth-child(2):before{background:var(--pal-400)}
+.cs-palette .hx-card:nth-child(3):before{background:var(--gold)}
+.cs-palette .hx-number{color:var(--pal-600)}
+.cs-palette .hx-icon{color:var(--pal-600)}
+.cs-palette .hx-service-copy,.cs-palette .hx-service-copy p{color:#3f4d5c!important}
+.cs-palette .hx-card .rf-link{color:var(--pal-900);border-top-color:#aeb8c0}
+.cs-palette .hx-card .rf-link svg{color:var(--pal-600)}
+.cs-palette .hx-services .rf-note{border-top-color:#778DA9}
+.cs-palette .hx-services .rf-note h3{color:var(--pal-900)}
+.cs-palette .hx-services .rf-note p{color:#415A77}
+.cs-palette .hx-services .rf-note .rf-link{color:var(--pal-900)}
+
+/* An operation built to perform — the primary navy contrast band. */
+.cs-palette .hx-proof-band{padding-block:52px;background:var(--pal-800);color:#fff}
+.cs-palette .hx-proof-band .kt-proof .rf-section-head{padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.32)}
+.cs-palette .hx-proof-band :is(h2,h3){color:#fff}
+.cs-palette .hx-proof-band .rf-eyebrow{color:#b8c8d9!important}
+.cs-palette .hx-proof-band .rf-proof{gap:0;border-top:0}
+.cs-palette .hx-proof-band .rf-proof article{min-height:170px;padding:24px 28px 12px;border-top:3px solid var(--pal-400);border-right:1px solid rgba(255,255,255,.24)}
+.cs-palette .hx-proof-band .rf-proof article:nth-child(2){border-top-color:var(--pal-400)}
+.cs-palette .hx-proof-band .rf-proof article:nth-child(3){border-top-color:#fff}
+.cs-palette .hx-proof-band .rf-proof article:nth-child(4){border-top-color:var(--gold);border-right:0}
+.cs-palette .hx-proof-band .rf-proof p{color:#d5dee8}
+.cs-palette .hx-proof-band .kt-sign{color:#b8c8d9!important}
+.cs-palette .hx-proof-band .rf-proof-top>span:last-child{color:#b8c8d9}
+
+/* Coverage — a separate, quiet information chapter. */
+.cs-palette .hx-coverage-band{padding-block:58px;background:#fff}
+.cs-palette .hx-coverage-layout{overflow:hidden;border:1px solid #778DA9;background:#fff}
+.cs-palette .hx-map-panel{padding:34px;background:#fff}
+.cs-palette .hx-coverage-copy{background:#f8fafc}
+.cs-palette .hx-coverage-copy .rf-eyebrow{color:var(--pal-600)!important}
+.cs-palette .hx-coverage-copy h2{color:var(--pal-900)}
+.cs-palette .hx-coverage-copy .rf-routes li{border-color:#c7cdd0;background:#fff;color:var(--pal-800)}
+.cs-palette .hx-coverage-copy .rf-routes svg{color:var(--pal-600)}
+
+/* About — an independent chapter with the logo arc translated into geometry. */
+.cs-palette .hx-about-band{padding-block:58px;background:#fff}
+.cs-palette .hx-about-layout{min-height:300px;border:1px solid #778DA9}
+.cs-palette .hx-about-mark{background:var(--pal-900)}
+.cs-palette .hx-about-mark:before{border-color:var(--pal-400)}
+.cs-palette .hx-about-mark:after{border-color:var(--gold)}
+.cs-palette .hx-about-copy{background:#fff}
+.cs-palette .hx-about-copy .rf-eyebrow{color:var(--pal-600)!important}
+.cs-palette .hx-about-copy h2{color:var(--pal-900)}
+
+/* CTA closes the page in navy and preserves the approved gold action. */
+.cs-palette .rf-cta{background:var(--pal-800);color:#fff}
+.cs-palette .rf-cta :is(h2,p){color:#fff}
+.cs-palette .rf-cta .rf-eyebrow{color:#d7e0ea!important}
+.cs-palette .rf-cta .rf-button{background:var(--gold);color:var(--pal-900)}
+
+@media(max-width:760px){
+  .cs-palette .hx-cards{grid-template-columns:1fr;grid-template-rows:auto;gap:12px}
+  .cs-palette .hx-card:first-child{grid-row:auto;min-height:0}
+  .cs-palette .hx-card-inner,.cs-palette .hx-card:first-child .hx-card-inner{min-height:230px;padding:22px 116px 22px 22px}
+  .cs-palette .hx-media-placeholder,.cs-palette .hx-card:first-child .hx-media-placeholder{right:22px;top:58px;width:72px;height:54px;margin:0;border:1px solid rgba(224,225,221,.22)}
+  .cs-palette .hx-card:first-child .hx-card-top,.cs-palette .hx-card:first-child .hx-service-title,.cs-palette .hx-card:first-child .hx-service-copy{max-width:none}
+  .cs-palette .hx-card:first-child .hx-service-title{margin-top:0}
+  .cs-palette .hx-card .hx-service-copy{max-width:none}
+  .cs-palette .hx-proof-band .rf-proof{gap:14px}
+  .cs-palette .hx-proof-band .rf-proof article{min-height:0;padding:19px;border:1px solid rgba(255,255,255,.24);border-top-width:3px}
+}
