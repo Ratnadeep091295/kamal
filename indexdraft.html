@@ -52,37 +52,39 @@
            PREMIUM 3D BANNER & SCROLLYTELLING INTEGRATION
            ============================================================ */
 
-        /* Enhanced Site Header on Daytime 3D Scene */
-        .site-header {
-            background: rgba(255, 255, 255, 0.88) !important;
-            backdrop-filter: blur(16px) !important;
-            -webkit-backdrop-filter: blur(16px) !important;
-            border-bottom: 1px solid rgba(18, 58, 90, 0.10) !important;
-            box-shadow: 0 4px 25px rgba(10, 31, 58, 0.06) !important;
-            color: var(--navy, #0c2340) !important;
-        }
+        /* Enhanced Site Header on Daytime 3D Scene (Desktop Screens) */
+        @media (min-width: 1024px) {
+            .site-header {
+                background: rgba(255, 255, 255, 0.88) !important;
+                backdrop-filter: blur(16px) !important;
+                -webkit-backdrop-filter: blur(16px) !important;
+                border-bottom: 1px solid rgba(18, 58, 90, 0.10) !important;
+                box-shadow: 0 4px 25px rgba(10, 31, 58, 0.06) !important;
+                color: var(--navy, #0c2340) !important;
+            }
 
-        .site-header .brand-logo-hero {
-            opacity: 0 !important;
-        }
+            .site-header .brand-logo-hero {
+                opacity: 0 !important;
+            }
 
-        .site-header .brand-logo-original {
-            opacity: 1 !important;
-        }
+            .site-header .brand-logo-original {
+                opacity: 1 !important;
+            }
 
-        .site-header .nav-links a {
-            color: #102a45 !important;
-            font-weight: 600 !important;
-        }
+            .site-header .nav-links a {
+                color: #102a45 !important;
+                font-weight: 600 !important;
+            }
 
-        .site-header .nav-links a:hover {
-            color: #1c5285 !important;
-        }
+            .site-header .nav-links a:hover {
+                color: #1c5285 !important;
+            }
 
-        .site-header .menu-button span,
-        .site-header .menu-button span::before,
-        .site-header .menu-button span::after {
-            background: #102a45 !important;
+            .site-header .menu-button span,
+            .site-header .menu-button span::before,
+            .site-header .menu-button span::after {
+                background: #102a45 !important;
+            }
         }
 
         /* Minimal Fullscreen Logo Loader */
@@ -343,32 +345,36 @@
             animation: bounceDown 1.8s ease-in-out infinite;
         }
 
-        @media (max-width: 900px) {
-            #hero-3d-backdrop {
-                background: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.78) 45%, rgba(0, 0, 0, 0.95) 100%) !important;
-            }
+        /* ============================================================
+           RESPONSIVE HERO SECTION VISIBILITY:
+           - Desktop (>= 1024px): 3D Animation Hero visible
+           - Tablet & Mobile (< 1024px): Old Classic Photo Banner visible
+           ============================================================ */
 
-            #hero-3d-overlay {
-                align-items: flex-end;
-                justify-content: center;
-                padding-left: 20px;
-                padding-right: 20px;
-                padding-bottom: 5vh;
-                background: transparent !important;
+        /* Desktop Screens (>= 1024px) */
+        @media (min-width: 1024px) {
+            #hero-3d-experience {
+                display: block !important;
             }
-
-            .hero-3d-milestone {
-                align-items: center;
-                text-align: center;
-                max-width: 100%;
+            #hero-static-banner {
+                display: none !important;
             }
+        }
 
-            .hero-3d-milestone .milestone-actions {
-                justify-content: center;
+        /* Tablet & Mobile Screens (< 1024px) */
+        @media (max-width: 1023px) {
+            #hero-3d-experience {
+                display: none !important;
             }
-
-            .scroll-explore-prompt {
-                justify-content: center;
+            #hero-static-banner {
+                display: block !important;
+            }
+            #app-loader {
+                display: none !important;
+            }
+            body.is-loading {
+                overflow: visible !important;
+                height: auto !important;
             }
         }
 
@@ -434,7 +440,24 @@
 
     <main class="home-doc" id="main-content">
 
-        <!-- 3D Interactive Banner Journey (Pinned Hero Section) -->
+        <!-- Classic Static Hero Banner (Tablet & Mobile Screens) -->
+        <section id="hero-static-banner" class="home-hero hero-photo-home">
+            <div class="hero-photo"></div>
+            <div class="hero-backdrop"></div>
+            <div class="hero-inner">
+                <div class="hero-copy">
+                    <div class="hero-kicker">Family Owned &middot; Established 2010</div>
+                    <h1><span>Waste &amp;</span><span>Bulk</span><span>Hauling.</span></h1>
+                    <div class="hero-actions">
+                        <a class="btn primary" href="quote.html">Request a Quote</a>
+                        <a class="text-link light" href="services.html">View Services <span>&rarr;</span></a>
+                    </div>
+                    <div class="hero-note">Ontario &middot; Michigan &middot; Seven-day operations</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3D Interactive Banner Journey (Desktop Screens Only: >= 1024px) -->
         <section id="hero-3d-experience" class="hero-3d-section">
             <div id="canvas-container"></div>
             <div id="hero-3d-backdrop"></div>
@@ -683,13 +706,49 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 
     <script>
+        // Silence non-fatal GLTFLoader secondary UV warnings to keep the developer console clean
+        const _origWarn = console.warn;
+        console.warn = function (...args) {
+            if (args[0] && typeof args[0] === 'string' && args[0].includes('Custom UV set')) return;
+            _origWarn.apply(console, args);
+        };
+
         if (history.scrollRestoration) {
             history.scrollRestoration = 'manual';
         }
         window.scrollTo(0, 0);
 
+        let hero3DInitialized = false;
+
+        function checkAndInitHero() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (!hero3DInitialized) {
+                    hero3DInitialized = true;
+                    init3DHero();
+                }
+            } else {
+                // On tablet & mobile: immediately dismiss the loader & unlock normal page scrolling
+                const loaderEl = document.getElementById('app-loader');
+                if (loaderEl) loaderEl.classList.add('loaded');
+                document.body.classList.remove('is-loading');
+                document.body.style.overflow = '';
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
-            init3DHero();
+            checkAndInitHero();
+        });
+
+        // Watch for responsive orientation/window changes across desktop breakpoint
+        let _resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(_resizeTimer);
+            _resizeTimer = setTimeout(() => {
+                if (window.innerWidth >= 1024 && !hero3DInitialized) {
+                    checkAndInitHero();
+                }
+            }, 300);
         });
 
         function createRoadTexture(renderer) {
@@ -1605,22 +1664,20 @@
                 // Comfortable buffer holding the final milestone before unpinning
                 tl.to({}, { duration: 2.0 }, "start+=38.0");
 
-                // --- GSAP ScrollTrigger Pinned Hero Banner Setup ---
-                // Pins the entire #hero-3d-experience banner section at the top of the viewport
-                // for 12000px of smooth scrollytelling.
-                // pinSpacing: true pushes the rest of the webpage (#services-preview, proof, etc.)
-                // down below the pin spacer so the website CANNOT scroll over the animation!
-                // When the animation completes (progress = 1.0), the hero naturally unpins
-                // and the webpage starts scrolling smoothly all the way down to the bottom!
-                ScrollTrigger.create({
-                    trigger: "#hero-3d-experience",
-                    start: "top top",
-                    end: "+=12000",
-                    pin: true,
-                    pinSpacing: true,
-                    scrub: 2.0,
-                    animation: tl,
-                    anticipatePin: 1
+                // --- GSAP ScrollTrigger Pinned Hero Banner Setup (Desktop Only) ---
+                ScrollTrigger.matchMedia({
+                    "(min-width: 1024px)": function () {
+                        return ScrollTrigger.create({
+                            trigger: "#hero-3d-experience",
+                            start: "top top",
+                            end: "+=12000",
+                            pin: true,
+                            pinSpacing: true,
+                            scrub: 2.0,
+                            animation: tl,
+                            anticipatePin: 1
+                        });
+                    }
                 });
 
                 // Smooth scroll handler for "Explore Services" CTA button
