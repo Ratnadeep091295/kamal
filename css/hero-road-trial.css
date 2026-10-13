@@ -1,0 +1,9 @@
+﻿/* Photo-only homepage trial. The existing gradient, typography and layout remain in place. */
+.editorial-mock.ed-page-index .hero-photo-home .hero-photo{
+  background-image:url('../assets/hero-roadside-trial-v1.png');
+  background-position:20% center;
+}
+@media(max-width:860px){
+  .editorial-mock.ed-page-index .hero-photo-home .hero-photo{background-position:8% center}
+}
+

@@ -1,0 +1,10 @@
+﻿/* About-only framing trial: the wider supplied photo, without perspective edits. */
+.editorial-mock.ed-page-about .rf.rf-inner-hero>.ed-title-photo{
+ left:-2%;right:auto;width:102%;object-fit:cover;object-position:50% 76%;transform:none
+}
+@media(max-width:760px){
+ .editorial-mock.ed-page-about .rf.rf-inner-hero>.ed-title-photo{
+  left:-1%;width:101%;object-position:54% 76%
+ }
+}
+

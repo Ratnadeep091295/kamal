@@ -1,0 +1,12 @@
+﻿/* Only the six approved body-photo containers. Existing geometry is unchanged. */
+.editorial-mock .service-gallery-media>img[data-service-photo],
+.services-alternating .ed-service-image>img[data-service-photo]{object-position:var(--photo-position);image-rendering:auto}
+@media(min-width:761px) and (max-width:1200px){
+ .services-alternating .ed-service-image>img[data-service-photo]{object-fit:contain;object-position:center;box-sizing:border-box;padding:0 24px 0 0}
+ .services-alternating #aggregate .ed-service-image>img[data-service-photo]{padding:0 0 0 24px}
+}
+@media(max-width:760px){
+ .editorial-mock .service-gallery-media>img[data-service-photo],
+ .services-alternating .ed-service-image>img[data-service-photo]{object-position:var(--photo-mobile-position)}
+}
+

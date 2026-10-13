@@ -1,0 +1,131 @@
+﻿/* Round two is isolated to Dâ€“F study pages. */
+.study-hero-image{display:none}
+@media(max-width:860px){
+ .editorial-mock:is(.mobile-study-d,.mobile-study-e,.mobile-study-f) .home-hero .hero-photo,
+ .editorial-mock:is(.mobile-study-d,.mobile-study-e,.mobile-study-f) .home-hero .hero-backdrop{display:none}
+ .editorial-mock:is(.mobile-study-d,.mobile-study-e,.mobile-study-f) .home-hero .hero-inner{padding:106px 0 30px}
+ .editorial-mock:is(.mobile-study-d,.mobile-study-e,.mobile-study-f) .home-hero.hero-photo-home h1{font-size:clamp(34px,10.5vw,60px);line-height:1;letter-spacing:-.025em}
+ .editorial-mock:is(.mobile-study-d,.mobile-study-e,.mobile-study-f) .home-hero h1 span:nth-child(-n+2){display:inline;white-space:normal}
+ .editorial-mock:is(.mobile-study-d,.mobile-study-e,.mobile-study-f) .home-hero h1 span:first-child::after{content:' '}
+ .editorial-mock:is(.mobile-study-d,.mobile-study-e,.mobile-study-f) .home-hero .hero-kicker{margin-bottom:18px}
+ .editorial-mock:is(.mobile-study-d,.mobile-study-e,.mobile-study-f) .study-hero-image{display:block;position:relative;margin:25px 0 0}
+ .study-hero-image img{display:block;width:100%;height:auto;aspect-ratio:1672/941;object-fit:cover}
+ /* D: a landscape print between the headline and the actions. */
+ .mobile-study-d .study-hero-image{border-bottom:2px solid var(--gold);box-shadow:8px 8px 0 #16425d}
+ .editorial-mock.mobile-study-d .home-hero .hero-actions{margin-top:28px}
+ /* E: the full-width photograph and a small action card overlap. */
+ .editorial-mock.mobile-study-e .study-hero-image{width:calc(100% + 40px);margin:18px -20px 0}
+ .mobile-study-e .study-hero-image::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#082a43,transparent 23%,transparent 82%,rgba(8,42,67,.4))}
+ .editorial-mock.mobile-study-e .home-hero .hero-actions{position:relative;z-index:2;justify-content:space-between;margin:-12px 0 0;padding:14px;background:#f5faff;border-top:2px solid var(--gold);gap:8px;flex-wrap:nowrap}
+ .editorial-mock.mobile-study-e .hero-actions .btn{padding-inline:12px;background:var(--gold);border-color:var(--gold);color:#082a43}
+ .editorial-mock.mobile-study-e .hero-actions .text-link{color:#082a43;letter-spacing:0}
+ .editorial-mock.mobile-study-e .hero-note{margin-top:20px}
+ /* F: a light surface, restrained headline and sharp-edged photo. */
+ .editorial-mock.mobile-study-f .home-hero.hero-photo-home{background:#fff;color:#0b2e49}
+ .editorial-mock.mobile-study-f .site-header{background:#fff;color:#0b2e49;border-bottom:1px solid #dce6eb}
+ .editorial-mock.mobile-study-f .site-header .menu-button{color:#0b2e49}
+ .editorial-mock.mobile-study-f .site-header .menu-button.open{color:#fff}
+ .editorial-mock.mobile-study-f .brand-logo-hero{opacity:0;visibility:hidden}
+ .editorial-mock.mobile-study-f .brand-logo-original{opacity:1;visibility:visible}
+ .editorial-mock.mobile-study-f .site-header:has(.menu-button.open) .brand-logo-hero{opacity:1;visibility:visible}
+ .editorial-mock.mobile-study-f .site-header:has(.menu-button.open) .brand-logo-original{opacity:0;visibility:hidden}
+ .editorial-mock.mobile-study-f .home-hero.hero-photo-home h1{font-family:Archivo,Arial,sans-serif;font-size:clamp(36px,10.5vw,60px);font-weight:800;text-transform:none;text-shadow:none;line-height:1.06}
+ .editorial-mock.mobile-study-f .home-hero h1 span:last-child{color:#23799e}
+ .editorial-mock.mobile-study-f .hero-kicker{color:#3c7089}
+ .editorial-mock.mobile-study-f .study-hero-image{margin:22px 0 0;box-shadow:8px 8px 0 #e0f1f8}
+ .mobile-study-f .study-hero-image::after{content:'';position:absolute;left:0;bottom:-8px;width:54px;height:2px;background:var(--gold)}
+ .editorial-mock.mobile-study-f .hero-actions{margin-top:28px}
+ .editorial-mock.mobile-study-f .hero-actions .btn{background:#0b2e49;color:#fff;border-color:#0b2e49}
+ .editorial-mock.mobile-study-f .hero-actions .text-link{color:#0b2e49}
+ .editorial-mock.mobile-study-f .hero-note{color:#3c7089}
+ /* Subpage D: a white title card overlaps a shallow panorama. */
+ .editorial-mock.mobile-study-d .rf.rf-inner-hero{padding:132px 0 24px;min-height:0;background:#fff}
+ .editorial-mock.mobile-study-d .rf.rf-inner-hero>.ed-title-photo{inset:0 0 auto;height:178px;object-position:50% 78%;z-index:0}
+ .editorial-mock.mobile-study-d .rf.rf-inner-hero::after{inset:0 0 auto;height:178px;z-index:1;background:linear-gradient(90deg,rgba(8,42,67,.45),rgba(8,42,67,.06))}
+ .editorial-mock.mobile-study-d .rf.rf-inner-hero>.rf-container{position:relative;z-index:2;background:#fff;padding:20px 22px;border-top:2px solid var(--gold);box-shadow:6px 6px 0 #e0f1f8}
+ .editorial-mock.mobile-study-d .rf.rf-inner-hero:has(.ed-title-photo) h1{color:#0b2e49;text-shadow:none}
+ .editorial-mock.mobile-study-d .rf-inner-hero:has(.ed-title-photo) .rf-breadcrumb{color:#36617b}
+ .editorial-mock.mobile-study-d .ed-title-curve{display:none}
+ /* Subpage E: a 160px title strip with a strong left gradient. */
+ .editorial-mock.mobile-study-e .rf.rf-inner-hero{min-height:160px;padding:22px 0 34px}
+ .editorial-mock.mobile-study-e .rf.rf-inner-hero>.ed-title-photo{object-position:50% 80%}
+ .editorial-mock.mobile-study-e .rf.rf-inner-hero::after{background:linear-gradient(90deg,rgba(3,20,32,.9),rgba(3,20,32,.6) 44%,rgba(3,20,32,.12))}
+ .editorial-mock.mobile-study-e .rf-inner-hero>.ed-title-curve{height:14px}
+ /* Subpage F: a light title above a wide, shallow photo. */
+ .editorial-mock.mobile-study-f .rf.rf-inner-hero{background:#fff;padding:24px 0 140px;min-height:0}
+ .editorial-mock.mobile-study-f .rf.rf-inner-hero:has(.ed-title-photo) h1{color:#0b2e49;text-shadow:none}
+ .editorial-mock.mobile-study-f .rf-inner-hero:has(.ed-title-photo) .rf-breadcrumb{color:#36617b}
+ .editorial-mock.mobile-study-f .rf.rf-inner-hero>.ed-title-photo{inset:auto 0 0;height:118px;object-position:50% 78%;z-index:0}
+ .editorial-mock.mobile-study-f .rf.rf-inner-hero::after{inset:auto 0 0;height:118px;background:linear-gradient(90deg,rgba(8,42,67,.2),rgba(8,42,67,.03));z-index:1}
+ .editorial-mock.mobile-study-f .ed-title-curve{display:none}
+}
+/* Quote D: an integrated introduction and form overlaps the photo banner. */
+.editorial-mock.quote-study-d .rf.rf-inner-hero{padding:28px 0 74px}
+.editorial-mock.quote-study-d .kt-quote-content{position:relative;z-index:2;margin-top:-48px;padding-top:0;max-width:1240px}
+.editorial-mock.quote-study-d .kt-quote-form{padding:30px;box-shadow:10px 10px 0 #e0f1f8}
+.editorial-mock.quote-study-d .quote-intro{grid-column:1/-1;max-width:none;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--line)}
+.editorial-mock.quote-study-d .quote-intro h2{font-size:28px}
+@media(min-width:961px){
+ .editorial-mock.quote-study-d .kt-quote-form{display:grid;grid-template-columns:1.2fr 1fr;gap:0 30px}
+ .editorial-mock.quote-study-d .ed-fieldset+.ed-fieldset{margin:0;padding:0 0 0 30px;border-top:0;border-left:1px solid var(--line)}
+ .editorial-mock.quote-study-d .quote-intro{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;align-items:center}
+ .editorial-mock.quote-study-d .quote-intro .eyebrow{grid-column:1/-1}
+ .editorial-mock.quote-study-d .quote-intro h2{margin:0}
+ .editorial-mock.quote-study-d .kt-quote-form textarea{height:134px;min-height:134px}
+}
+/* Quote E: open horizontal sections with labels in a narrow left column. */
+.editorial-mock.quote-study-e .kt-quote-content{max-width:1200px}
+.editorial-mock.quote-study-e .kt-quote-form{padding:0;box-shadow:none;border:0}
+.editorial-mock.quote-study-e .ed-fieldset{border-top:1px solid var(--line);padding-top:24px}
+.editorial-mock.quote-study-e .ed-fieldset legend{float:none;width:auto;padding:0 18px 0 0;margin-bottom:16px}
+.editorial-mock.quote-study-e .quote-form-end{margin-top:26px;padding-top:22px}
+.editorial-mock.quote-study-e .quote-intro{max-width:900px;margin-bottom:32px}
+@media(min-width:961px){
+ .editorial-mock.quote-study-e .ed-fieldset{position:relative;padding-left:218px;min-height:160px}
+ .editorial-mock.quote-study-e .ed-fieldset legend{position:absolute;left:0;top:22px;max-width:185px;font-size:23px;line-height:1.15}
+ .editorial-mock.quote-study-e .ed-field-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .quote-study-e .kt-quote-field:nth-child(-n+4){grid-column:span 1}
+ .quote-study-e .kt-quote-field:nth-child(5){grid-column:span 2}
+ .quote-study-e .kt-quote-field:nth-child(6),.quote-study-e .kt-quote-field:nth-child(7){grid-column:span 1}
+ .quote-study-e .ed-fieldset:nth-of-type(2) .kt-quote-field{grid-column:1/-1}
+ .editorial-mock.quote-study-e .quote-form-end{padding-left:218px}
+}
+/* Quote F: progressive presentation of the two existing fieldsets. */
+.quote-steps{display:none}
+.quote-steps ol{display:flex;list-style:none;gap:24px;margin:0 0 24px;padding:0 0 20px;border-bottom:1px solid var(--line)}
+.quote-steps li{display:flex;align-items:center;gap:9px;font-size:14px;color:#697e8b}
+.quote-steps li>span{display:grid;place-items:center;flex:none;width:27px;height:27px;border:1px solid #cbdde6;font-size:12px}
+.quote-steps li[aria-current=step]{color:#0b2e49;font-weight:700}
+.quote-steps li[aria-current=step]>span{background:#0b2e49;color:#fff;border-color:#0b2e49}
+.quote-steps-enabled .quote-steps{display:block}
+.editorial-mock.quote-steps-enabled .ed-fieldset+.ed-fieldset{margin:0;padding:0;border:0}
+.quote-step-controls{display:flex;justify-content:space-between;gap:18px;border-top:1px solid var(--line);margin-top:24px;padding-top:20px}
+.quote-step-controls button{font:700 14px/1.4 Archivo,Arial,sans-serif;min-height:48px;border:0;padding:12px 22px;cursor:pointer}
+.quote-step-controls .quote-step-next{margin-left:auto;display:flex;gap:32px;align-items:center;color:#082a43;background:var(--gold)}
+.quote-step-controls .quote-step-back{background:#edf6fa;color:#0b2e49}
+.editorial-mock.quote-study-f .quote-form-end{margin-top:16px;padding-top:0;border:0}
+.editorial-mock.quote-study-f .quote-form-end .kt-quote-submit{background:var(--gold);color:#0b2e49}
+@media(min-width:961px){
+ .editorial-mock.quote-study-f .kt-quote-content{display:grid;grid-template-columns:300px minmax(0,1fr);gap:48px;align-items:start;max-width:1200px;padding-top:40px}
+ .editorial-mock.quote-study-f .quote-intro{padding-top:12px}
+ .editorial-mock.quote-study-f .quote-intro h2{font-size:34px}
+ .editorial-mock.quote-study-f .kt-quote-form{padding:28px}
+ .editorial-mock.quote-study-f .kt-quote-form textarea{min-height:194px;height:194px}
+}
+@media(max-width:760px){
+ .editorial-mock.quote-study-d .rf.rf-inner-hero{min-height:192px;padding-bottom:62px}
+ .editorial-mock.quote-study-d .kt-quote-content{margin-top:-28px;padding-top:0}
+ .editorial-mock.quote-study-d .kt-quote-form{padding:22px 16px;box-shadow:6px 6px 0 #e0f1f8}
+ .editorial-mock.quote-study-d .quote-intro h2{font-size:27px}
+ .editorial-mock.quote-study-e .rf.rf-inner-hero,.editorial-mock.quote-study-f .rf.rf-inner-hero{min-height:170px}
+ .editorial-mock.quote-study-e .kt-quote-form{padding:0;border:0;box-shadow:none}
+ .editorial-mock.quote-study-e .ed-fieldset{padding-top:16px}
+ .editorial-mock.quote-study-e .ed-fieldset legend{font-size:21px;margin-bottom:8px}
+ .editorial-mock.quote-study-e .kt-quote-content{padding-right:0}
+ .quote-steps ol{gap:16px;justify-content:space-between}
+ .quote-steps li{font-size:12px;gap:6px}
+ .quote-steps li>span{width:23px;height:23px}
+ .editorial-mock.quote-study-f .kt-quote-form{padding:22px 16px}
+ .quote-step-controls .quote-step-next{flex:1;justify-content:space-between}
+}
+

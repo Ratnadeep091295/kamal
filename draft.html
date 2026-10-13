@@ -31,23 +31,42 @@
         #scroll-container {
             position: relative;
             z-index: 2;
-            height: 10000px;
-            /* Long journey */
+            height: 14000px;
+            /* Generous smooth journey */
             pointer-events: none;
         }
 
         #loading {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 100;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px 40px;
-            border-radius: 8px;
-            font-weight: bold;
-            color: #1c355e;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            inset: 0;
+            z-index: 10000;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
+        }
+
+        .loading-logo-wrap {
+            width: clamp(140px, 14vw, 200px);
+            animation: loaderPulse 2s ease-in-out infinite;
+        }
+
+        .loading-logo-wrap img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        @keyframes loaderPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.88;
+            }
+            50% {
+                transform: scale(1.035);
+                opacity: 1;
+            }
         }
 
         /* Overlay UI Sections */
@@ -69,6 +88,7 @@
             margin-bottom: 20px;
             opacity: 0;
             transform: translateY(40px);
+            filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.8));
         }
 
         .section h1 {
@@ -78,124 +98,91 @@
             line-height: 0.98;
             text-transform: uppercase;
             letter-spacing: -2.5px;
-
-            /* Premium blue gradient */
+            color: #ffffff;
             background: linear-gradient(135deg,
-                    #071a33 0%,
-                    #123b68 45%,
-                    #3f6f9f 100%);
-
+                    #ffffff 0%,
+                    #edf5fc 45%,
+                    #9fd1f7 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-
-            /* Soft depth */
-            text-shadow:
-                0 2px 3px rgba(10, 31, 58, 0.08),
-                0 12px 30px rgba(10, 31, 58, 0.12);
-
-            /* Animation starting state */
+            text-shadow: 0 4px 28px rgba(0, 0, 0, 0.9);
+            filter: drop-shadow(0 2px 18px rgba(0, 0, 0, 0.7));
             opacity: 0;
             transform: translateY(40px);
-
-            /* Slightly smoother rendering */
             -webkit-font-smoothing: antialiased;
             text-rendering: geometricPrecision;
         }
 
-
         .section p {
             font-size: clamp(1rem, 1.3vw, 1.25rem);
             max-width: 460px;
-
             margin-top: 22px;
             margin-bottom: 0;
-
-            font-weight: 450;
+            font-weight: 500;
             line-height: 1.7;
             letter-spacing: 0.3px;
-
-            color: #36516f;
-
-            /* Subtle readability */
-            text-shadow: 0 1px 8px rgba(255, 255, 255, 0.7);
-
-            /* Animation starting state */
+            color: #dbe8f5;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.85);
             opacity: 0;
             transform: translateY(40px);
-
             -webkit-font-smoothing: antialiased;
         }
 
-        #sec-1 {
-            top: 0vh;
-            justify-content: flex-end;
-            align-items: flex-start;
-            text-align: left;
-            padding-bottom: 15vh;
-        }
-
-        #sec-2 {
-            top: 2000px;
-            justify-content: flex-start;
-            align-items: flex-end;
-            text-align: right;
-            padding-top: 15vh;
-        }
-
-        #sec-3 {
-            top: 4000px;
-            justify-content: flex-end;
-            align-items: flex-start;
-            text-align: left;
-            padding-bottom: 15vh;
-        }
-
-        #sec-4 {
-            top: 6000px;
-            justify-content: flex-start;
-            align-items: flex-end;
-            text-align: right;
-            padding-top: 15vh;
-        }
-
         #sec-5 {
-            top: auto;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 7vw;
+            left: auto;
+            width: auto;
+            max-width: 620px;
+            justify-content: center;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        #hero-backdrop {
+            position: fixed;
+            top: 0;
+            right: 0;
             bottom: 0;
-            justify-content: flex-start;
-            align-items: center;
-            text-align: center;
-            padding-top: 10vh;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0;
+            background:
+                linear-gradient(270deg,
+                    rgba(0, 0, 0, 0.95) 0%,
+                    rgba(0, 0, 0, 0.88) 35%,
+                    rgba(0, 0, 0, 0.60) 65%,
+                    rgba(0, 0, 0, 0.15) 85%,
+                    rgba(0, 0, 0, 0) 100%),
+                linear-gradient(180deg,
+                    rgba(0, 0, 0, 0.35) 0%,
+                    transparent 30%,
+                    transparent 70%,
+                    rgba(0, 0, 0, 0.45) 100%);
         }
     </style>
 </head>
 
 <body>
 
-    <div id="loading">Loading 3D Assets...</div>
+    <div id="loading">
+        <div class="loading-logo-wrap">
+            <img src="assets/logo-classic.webp" alt="Kamal Transport">
+        </div>
+    </div>
 
     <div id="canvas-container"></div>
+    <div id="hero-backdrop"></div>
 
     <div id="scroll-container">
-        <!-- Text overlays -->
-        <div id="sec-1" class="section">
-            <h1>Reliability<br>At Every<br>Milestone</h1>
-            <p>From the first mile to the last.</p>
-        </div>
-        <div id="sec-2" class="section">
-            <h1>Loading<br>Efficiency</h1>
-            <p>Ready to move your heaviest cargo.</p>
-        </div>
-        <div id="sec-3" class="section">
-            <h1>Global<br>Network</h1>
-            <p>Travelling through major trade corridors.</p>
-        </div>
-        <div id="sec-4" class="section">
-            <h1>Unloading<br>Precision</h1>
-            <p>Walking-floor technology for safe, fast discharge.</p>
-        </div>
+        <!-- Text overlay: Final milestone only -->
         <div id="sec-5" class="section">
-            <img src="assets/logo-classic.webp" alt="Kamal Transport Logo" class="logo">
+            <img src="assets/Kamalwhite.png" alt="Kamal Transport Logo" class="logo">
             <h1>Waste &amp; Bulk Hauling.</h1>
             <p>Ontario &middot; Michigan &middot; Seven-day operations</p>
         </div>
@@ -320,45 +307,70 @@
             const container = document.getElementById('canvas-container');
             const loadingEl = document.getElementById('loading');
 
-            // --- 1. Scene Setup ---
+            // --- 1. Scene Setup & Natural Atmospheric Ambience ---
             const scene = new THREE.Scene();
-            // Create Gradient Sky
+
+            // Atmospheric Fog: softens horizon and creates seamless infinite depth
+            const HORIZON_COLOR = '#c2d7ea';
+            scene.fog = new THREE.Fog(HORIZON_COLOR, 150, 1600);
+
+            // Natural Daylight Sky Gradient
             const skyCanvas = document.createElement('canvas');
             skyCanvas.width = 2;
             skyCanvas.height = 512;
             const skyCtx = skyCanvas.getContext('2d');
             const skyGrad = skyCtx.createLinearGradient(0, 0, 0, 512);
-            skyGrad.addColorStop(0, '#dbe9f4'); // Premium cool-grey light
-            skyGrad.addColorStop(1, '#f8f9fa'); // Almost white at horizon
+            skyGrad.addColorStop(0.0, '#276ab2'); // Atmospheric cerulean zenith
+            skyGrad.addColorStop(0.35, '#5693c9'); // Soft daylight blue
+            skyGrad.addColorStop(0.70, '#8eb8dc'); // Ambient haze
+            skyGrad.addColorStop(1.0, HORIZON_COLOR); // Luminous horizon matching fog exactly
             skyCtx.fillStyle = skyGrad;
             skyCtx.fillRect(0, 0, 2, 512);
             const skyTex = new THREE.CanvasTexture(skyCanvas);
             skyTex.encoding = THREE.sRGBEncoding;
             scene.background = skyTex;
 
-            // Create Gradient Ground
+            // Seamless Organic Meadow Terrain Texture
             const groundCanvas = document.createElement('canvas');
-            groundCanvas.width = 512;
-            groundCanvas.height = 512;
+            groundCanvas.width = 1024;
+            groundCanvas.height = 1024;
             const groundCtx = groundCanvas.getContext('2d');
-            const groundGrad = groundCtx.createRadialGradient(256, 256, 0, 256, 256, 256);
-            groundGrad.addColorStop(0, '#d1d8df'); // Lighter slate at center
-            groundGrad.addColorStop(1, '#a6b3c0'); // Darker corporate grey at edges
-            groundCtx.fillStyle = groundGrad;
-            groundCtx.fillRect(0, 0, 512, 512);
+            groundCtx.fillStyle = '#7a8c6e'; // Natural balanced meadow earth base
+            groundCtx.fillRect(0, 0, 1024, 1024);
+
+            // Multi-scale soft stippling for organic micro-texture without repetitive tiling
+            for (let i = 0; i < 20000; i++) {
+                const rx = Math.random() * 1024;
+                const ry = Math.random() * 1024;
+                const shade = Math.random();
+                if (shade > 0.65) {
+                    groundCtx.fillStyle = 'rgba(142, 160, 126, 0.35)'; // Soft grass highlight
+                } else if (shade > 0.35) {
+                    groundCtx.fillStyle = 'rgba(96, 112, 85, 0.35)';   // Grass depth
+                } else {
+                    groundCtx.fillStyle = 'rgba(118, 110, 92, 0.25)';  // Warm loam soil
+                }
+                const sz = Math.random() * 4 + 1;
+                groundCtx.fillRect(rx, ry, sz, sz);
+            }
+
             const groundTex = new THREE.CanvasTexture(groundCanvas);
+            groundTex.wrapS = THREE.RepeatWrapping;
+            groundTex.wrapT = THREE.RepeatWrapping;
+            groundTex.repeat.set(32, 32);
             groundTex.encoding = THREE.sRGBEncoding;
 
-            // Add minimal ground plane with corporate slate gradient
-            const groundGeo = new THREE.PlaneGeometry(15000, 15000);
+            // Large terrain plane - blends seamlessly into horizon fog with zero visible edge
+            const groundGeo = new THREE.PlaneGeometry(16000, 16000);
             const groundMat = new THREE.MeshStandardMaterial({
                 map: groundTex,
-                roughness: 1.0,
+                color: '#b0c2a7', // Harmonious tint that naturally blends into fog
+                roughness: 0.98,
                 metalness: 0.0
             });
             const groundMesh = new THREE.Mesh(groundGeo, groundMat);
             groundMesh.rotation.x = -Math.PI / 2;
-            groundMesh.position.y = -0.5; // Just below the road
+            groundMesh.position.y = 0.0; // Sitting flush right under road
             groundMesh.receiveShadow = true;
             scene.add(groundMesh);
 
@@ -377,34 +389,101 @@
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             container.appendChild(renderer.domElement);
 
-            // --- 4. Lighting ---
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+            // --- 4. Natural Lighting ---
+            // Sky hemisphere light: natural blue sky bounce and green earth bounce
+            const hemiLight = new THREE.HemisphereLight('#8eb9dd', '#5a674e', 0.65);
+            scene.add(hemiLight);
+
+            // Ambient fill
+            const ambientLight = new THREE.AmbientLight('#d8e6f3', 0.35);
             scene.add(ambientLight);
 
-            const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
-            dirLight.position.set(100, 300, 100);
+            // Warm natural sun light
+            const dirLight = new THREE.DirectionalLight('#fff4e0', 1.6);
+            dirLight.position.set(120, 320, 120);
             dirLight.castShadow = true;
             dirLight.shadow.mapSize.width = 2048;
             dirLight.shadow.mapSize.height = 2048;
             dirLight.shadow.camera.near = 0.5;
-            dirLight.shadow.camera.far = 1000;
-            const d = 300;
+            dirLight.shadow.camera.far = 2000;
+            const d = 600;
             dirLight.shadow.camera.left = -d;
             dirLight.shadow.camera.right = d;
             dirLight.shadow.camera.top = d;
             dirLight.shadow.camera.bottom = -d;
+            dirLight.shadow.camera.updateProjectionMatrix();
             scene.add(dirLight);
+            scene.add(dirLight.target);
 
             // --- 5. Road Generation ---
-            // Create a long curving path
+            // Create a road path: straight to the station, then winding through trade corridors
             const curve = new THREE.CatmullRomCurve3([
                 new THREE.Vector3(0, 0, 0),             // Start (Scene 1)
-                new THREE.Vector3(-200, 0, -400),       // Loading Site (Scene 2)
-                new THREE.Vector3(-500, 0, -1000),      // Curve
-                new THREE.Vector3(200, 0, -1800),       // Curve
+                new THREE.Vector3(0, 0, -450),          // Loading Site (Scene 2)
+                new THREE.Vector3(-350, 0, -1050),      // Curve Left
+                new THREE.Vector3(200, 0, -1800),       // Curve Right
                 new THREE.Vector3(500, 0, -2500),       // Waste Facility (Scene 4)
                 new THREE.Vector3(0, 0, -3200)          // End (Scene 5)
             ]);
+
+            function computeCurvature(u) {
+                const clampedU = Math.max(0, Math.min(1, u));
+                const pA = Math.max(0, clampedU - 0.006);
+                const pB = Math.min(1, clampedU + 0.006);
+                const tA = curve.getTangentAt(pA);
+                const tB = curve.getTangentAt(pB);
+                const angA = Math.atan2(tA.x, tA.z);
+                const angB = Math.atan2(tB.x, tB.z);
+                let diff = angB - angA;
+                while (diff > Math.PI) diff -= Math.PI * 2;
+                while (diff < -Math.PI) diff += Math.PI * 2;
+                return diff / 0.012;
+            }
+
+            function buildTurnZones(curveRef) {
+                const SAMPLES = 400;
+                const samples = [];
+                for (let i = 0; i <= SAMPLES; i++) {
+                    const p = i / SAMPLES;
+                    samples.push({ p: p, c: computeCurvature(p) });
+                }
+                const CURV_THRESHOLD = 0.8;
+                const zones = [];
+                let curZone = null;
+                for (let i = 0; i <= SAMPLES; i++) {
+                    const s = samples[i];
+                    if (s.p <= 0.155) continue;
+                    const isLeft = s.c > CURV_THRESHOLD;
+                    const isRight = s.c < -CURV_THRESHOLD;
+                    const dir = isLeft ? 'LEFT' : (isRight ? 'RIGHT' : 'STRAIGHT');
+                    if (curZone) {
+                        if (dir === curZone.type) {
+                            curZone.end = s.p;
+                        } else {
+                            if (curZone.end - curZone.start >= 0.02) {
+                                zones.push(curZone);
+                            }
+                            curZone = (dir !== 'STRAIGHT') ? { type: dir, start: s.p, end: s.p } : null;
+                        }
+                    } else {
+                        if (dir !== 'STRAIGHT') {
+                            curZone = { type: dir, start: s.p, end: s.p };
+                        }
+                    }
+                }
+                if (curZone && curZone.end - curZone.start >= 0.02) {
+                    zones.push(curZone);
+                }
+                zones.forEach(z => {
+                    const len = z.end - z.start;
+                    const transLen = Math.min(len * 0.3, 0.035);
+                    z.enterEnd = z.start + transLen;
+                    z.exitStart = z.end - transLen;
+                });
+                return zones;
+            }
+
+            const turnZones = buildTurnZones(curve);
 
             function createRoadGeometry(curve, segments, width) {
                 const geometry = new THREE.BufferGeometry();
@@ -470,7 +549,20 @@
             }
 
             const roadTexture = createRoadTexture(renderer);
-            const roadGeom = createRoadGeometry(curve, 1000, 40); // Reduced road width to 40
+            const roadGeom = createRoadGeometry(curve, 1000, 40);
+
+            // Subtle integrated road shoulder transitioning seamlessly into the meadow
+            const roadShoulderGeom = createRoadGeometry(curve, 1000, 48);
+            const roadShoulderMat = new THREE.MeshStandardMaterial({
+                color: '#656f5c',
+                roughness: 0.98,
+                metalness: 0.0,
+                side: THREE.DoubleSide
+            });
+            const roadShoulderMesh = new THREE.Mesh(roadShoulderGeom, roadShoulderMat);
+            roadShoulderMesh.receiveShadow = true;
+            roadShoulderMesh.position.y = 0.04;
+            scene.add(roadShoulderMesh);
 
             const roadMat = new THREE.MeshStandardMaterial({
                 map: roadTexture,
@@ -480,157 +572,431 @@
             });
             const roadMesh = new THREE.Mesh(roadGeom, roadMat);
             roadMesh.receiveShadow = true;
-            roadMesh.position.y = 0.1; // Slightly above ground
+            roadMesh.position.y = 0.1; // Slightly above road shoulder
             scene.add(roadMesh);
 
+            // --- 6. Dumping Yard Ground & Geometry Setup ---
+            const unloadPoint = curve.getPointAt(0.78);
+            const unloadTangent = curve.getTangentAt(0.78).normalize();
+            const yardNormal = new THREE.Vector3(0, 1, 0);
+            const yardRight = new THREE.Vector3().crossVectors(unloadTangent, yardNormal).normalize();
 
-            // --- 6. Coal Meshes (Programmatic) ---
-            // Coal inside trailer (scaled way down so it doesn't hide the truck)
-            const coalGeo = new THREE.BoxGeometry(4, 1.5, 10);
-            const coalMat = new THREE.MeshStandardMaterial({ color: 0x555555, roughness: 0.9 }); // Gray pile
-            const internalCoal = new THREE.Mesh(coalGeo, coalMat);
-            internalCoal.position.set(0, 20, 0);
-            // We will attach this to the truck once it loads
+            // Dumping Yard Ground Pad - organic feathered edge seamlessly blending into meadow terrain
+            const yardCanvas = document.createElement('canvas');
+            yardCanvas.width = 512;
+            yardCanvas.height = 512;
+            const yardCtx = yardCanvas.getContext('2d');
+            const yardGrad = yardCtx.createRadialGradient(256, 256, 20, 256, 256, 250);
+            yardGrad.addColorStop(0.0, 'rgba(22, 25, 28, 0.92)'); // Industrial coal & asphalt center
+            yardGrad.addColorStop(0.35, 'rgba(38, 44, 42, 0.80)'); // Packed gravel
+            yardGrad.addColorStop(0.60, 'rgba(62, 72, 60, 0.50)'); // Gravel-soil transitional zone
+            yardGrad.addColorStop(0.82, 'rgba(122, 140, 110, 0.20)'); // Matching meadow hue
+            yardGrad.addColorStop(1.0, 'rgba(122, 140, 110, 0.0)');  // Completely feathering out to invisible
+            yardCtx.fillStyle = yardGrad;
+            yardCtx.fillRect(0, 0, 512, 512);
 
-            // --- 6. The Dumping Element (Coal Pile) ---
-            const pileGeom = new THREE.DodecahedronGeometry(25, 0);
-            const pileMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.9 });
-            const groundCoal = new THREE.Mesh(pileGeom, pileMat);
-            groundCoal.castShadow = true;
-            groundCoal.receiveShadow = true;
+            // Add organic grit noise to break up any circular edge
+            yardCtx.fillStyle = 'rgba(0, 0, 0, 0.06)';
+            for (let i = 0; i < 4000; i++) {
+                const rx = Math.random() * 512;
+                const ry = Math.random() * 512;
+                const dist = Math.hypot(rx - 256, ry - 256);
+                if (dist < 245) {
+                    yardCtx.fillRect(rx, ry, Math.random() * 3 + 1, Math.random() * 3 + 1);
+                }
+            }
 
-            const unloadPoint = curve.getPointAt(0.78); // Approx near index 4
-            groundCoal.position.copy(unloadPoint);
-            groundCoal.position.y = 5;
-            // Shift it slightly backwards so it sits neatly near the truck back
-            const unloadTangent = curve.getTangentAt(0.78);
-            groundCoal.position.addScaledVector(unloadTangent, -90);
-            groundCoal.scale.set(0, 0, 0); // Starts empty
-            scene.add(groundCoal);
+            const yardTex = new THREE.CanvasTexture(yardCanvas);
+            yardTex.encoding = THREE.sRGBEncoding;
+
+            const yardGeo = new THREE.CircleGeometry(160, 64);
+            const yardMat = new THREE.MeshStandardMaterial({
+                map: yardTex,
+                transparent: true,
+                depthWrite: false, // Prevents z-fighting and seam lines
+                roughness: 0.98,
+                metalness: 0.02
+            });
+            const yardMesh = new THREE.Mesh(yardGeo, yardMat);
+            yardMesh.rotation.x = -Math.PI / 2;
+            const yardCenterPos = unloadPoint.clone()
+                .addScaledVector(yardRight, 34)
+                .addScaledVector(unloadTangent, -30);
+            yardMesh.position.set(yardCenterPos.x, 0.02, yardCenterPos.z);
+            yardMesh.receiveShadow = true;
+            scene.add(yardMesh);
 
             // --- 7. Load Models ---
             const loader = new THREE.GLTFLoader();
-            const objLoader = new THREE.OBJLoader();
-            const textureLoader = new THREE.TextureLoader();
 
+            // Driving truck container and model wrappers
+            const truckContainer = new THREE.Group();
+            scene.add(truckContainer);
+            let truckModel = truckContainer; // Keep reference for camera tracking
 
-            let truckModel, jcbModel;
-            let truckSize;
-            let mixer;
-            let gltfAnimations = [];
+            let truckStraightWrapper = null;
+            let truckLeftWrapper = null;
+            let truckRightWrapper = null;
 
-            // State for GSAP
+            let mixerStraight = null;
+            let mixerLeft = null;
+            let mixerRight = null;
+
+            // Coal Loading Site (Station 1: JCB + Coal Field + Animated Lid)
+            const coalLoadSiteGroup = new THREE.Group();
+            scene.add(coalLoadSiteGroup);
+            coalLoadSiteGroup.visible = false;
+
+            let coalLoadModel = null;
+            let mixerCoalLoad = null;
+
+            // Coal Unloading / Dumping Site (Station 2: Waste Facility Walking Floor & Discharge)
+            const coalUnloadSiteGroup = new THREE.Group();
+            scene.add(coalUnloadSiteGroup);
+            coalUnloadSiteGroup.visible = false;
+
+            let coalUnloadModel = null;
+            let mixerCoalUnload = null;
+
+            // Shared Normalization Metrics across all models
+            let metricsInitialized = false;
+            let truckScaleFactor = 1;
+            let truckRawCenter = new THREE.Vector3();
+            let truckRawHeight = 30;
+
+            function initMetricsFromModel(model) {
+                if (metricsInitialized) return;
+                const box = new THREE.Box3().setFromObject(model);
+                const rawSize = box.getSize(new THREE.Vector3());
+                truckRawCenter.copy(box.getCenter(new THREE.Vector3()));
+                truckRawHeight = rawSize.y;
+                const maxRawDim = Math.max(rawSize.x, rawSize.y, rawSize.z);
+                truckScaleFactor = 100 / maxRawDim;
+                metricsInitialized = true;
+            }
+
+            function createSubTruckWrapper(model) {
+                model.traverse((node) => {
+                    if (node.isMesh) {
+                        node.castShadow = true;
+                        node.receiveShadow = true;
+                        if (node.material) {
+                            node.material.envMapIntensity = 0.5;
+                            // Prevent specular white blowout hotspots on the truck cab and trailer
+                            if (node.material.roughness !== undefined && node.material.roughness < 0.35) {
+                                node.material.roughness = 0.45;
+                            }
+                        }
+                    }
+                });
+
+                const centering = new THREE.Group();
+                centering.add(model);
+                centering.position.set(-truckRawCenter.x, -truckRawCenter.y + (truckRawHeight / 2), -truckRawCenter.z);
+
+                const rotating = new THREE.Group();
+                rotating.rotation.y = Math.PI / 2;
+                rotating.scale.set(truckScaleFactor, truckScaleFactor, truckScaleFactor);
+                rotating.add(centering);
+
+                return rotating;
+            }
+
+            // State for GSAP Timeline & scrubbing
             const sceneState = {
                 progress: 0,
+                loadProgress: 0,
+                unloadProgress: 0,
                 camRadius: 150,
                 camHeight: 50,
                 camTheta: Math.PI / 2, // Side view initially
-                camLookY: 0, // Vertical look offset to frame the truck lower
-                camPanForward: 0, // Forward offset for cinematic panning
-                animProgress: 0, // Truck mechanical animations
-                coalScale: 1, // Full coal inside
-                pileScale: 0, // Empty pile outside
-                jcbDist: 100 // Distance of JCB from truck
+                camLookForward: 20,
+                camLookSide: 0,
+                camLookY: 0,
+                camPanForward: 0,
+                camCustomBlend: 0, // 0 = orbit tracking, 1 = custom local coordinates
+                camLocalX: 0,
+                camLocalY: 24,
+                camLocalZ: -12,
+                camTargetX: 0,
+                camTargetY: 19.5,
+                camTargetZ: -48,
+                animProgress: 0,
+                coalScale: 1
             };
 
             let assetsLoaded = 0;
+            const TOTAL_ASSETS = 7;
             function checkLoad() {
                 assetsLoaded++;
-                if (assetsLoaded === 2) {
-                    loadingEl.style.display = 'none';
+                if (assetsLoaded === TOTAL_ASSETS) {
+                    if (loadingEl) {
+                        loadingEl.style.opacity = '0';
+                        setTimeout(() => { loadingEl.style.display = 'none'; }, 600);
+                    }
                     setupScrollAnimation();
                 }
             }
 
-            window.clock = new THREE.Clock();
-
+            // 1. Load Straight Truck Model
             loader.load(
-                '3d model/Truck Anim_04.glb',
+                '3d model/Truck_Straight.glb',
                 function (gltf) {
-                    truckModel = gltf.scene;
-
-                    truckModel.traverse((node) => {
-                        if (node.isMesh) {
-                            node.castShadow = true;
-                            node.receiveShadow = true;
-                            if (node.material) node.material.envMapIntensity = 1.0;
-                        }
-                    });
-
-                    const box = new THREE.Box3().setFromObject(truckModel);
-                    let size = box.getSize(new THREE.Vector3());
-                    let center = box.getCenter(new THREE.Vector3());
-
-                    // Normalize Truck Scale so it is always exactly 100 units long (prevents camera clipping bugs)
-                    const maxRawDim = Math.max(size.x, size.y, size.z);
-                    const targetScale = 100 / maxRawDim;
-                    truckModel.scale.set(targetScale, targetScale, targetScale);
-
-                    // Re-calculate after scaling
-                    box.setFromObject(truckModel);
-                    truckSize = box.getSize(new THREE.Vector3());
-                    center = box.getCenter(new THREE.Vector3());
-
-                    // Center pivot
-                    truckModel.position.x = -center.x;
-                    truckModel.position.y = -center.y + (truckSize.y / 2);
-                    truckModel.position.z = -center.z;
-                    truckModel.rotation.y = Math.PI / 2;
-
-                    const truckContainer = new THREE.Group();
-                    truckContainer.add(truckModel);
-
-                    // Add internal coal to trailer
-                    internalCoal.position.set(0, 15, -10); // Adjust to sit inside Deloupe trailer
-                    truckContainer.add(internalCoal);
-
-                    scene.add(truckContainer);
-                    truckModel = truckContainer; // Reassign reference so rig follows container
+                    initMetricsFromModel(gltf.scene);
+                    truckStraightWrapper = createSubTruckWrapper(gltf.scene);
+                    truckStraightWrapper.visible = true;
+                    truckContainer.add(truckStraightWrapper);
 
                     if (gltf.animations && gltf.animations.length > 0) {
-                        mixer = new THREE.AnimationMixer(gltf.scene);
-                        const clip = gltf.animations[0];
-                        sceneState.maxAnimDuration = clip.duration;
-
-                        const action = mixer.clipAction(clip);
+                        mixerStraight = new THREE.AnimationMixer(gltf.scene);
+                        const action = mixerStraight.clipAction(gltf.animations[0]);
                         action.play();
                     }
-
+                    checkLoad();
+                },
+                undefined,
+                function (err) {
+                    console.error('Error loading Truck_Straight.glb:', err);
                     checkLoad();
                 }
             );
 
-            // Load JCB
-            const jcbMat = new THREE.MeshStandardMaterial({
-                map: textureLoader.load('3d model/JCB truck/texture_diffuse.png'),
-                normalMap: textureLoader.load('3d model/JCB truck/texture_normal.png'),
-                roughnessMap: textureLoader.load('3d model/JCB truck/texture_roughness.png'),
-                metalnessMap: textureLoader.load('3d model/JCB truck/texture_metallic.png'),
-                color: 0xffffff
-            });
+            // 2. Load Left Turn Truck Model
+            loader.load(
+                '3d model/Truck_Left.glb',
+                function (gltf) {
+                    initMetricsFromModel(gltf.scene);
+                    truckLeftWrapper = createSubTruckWrapper(gltf.scene);
+                    truckLeftWrapper.visible = false;
+                    truckContainer.add(truckLeftWrapper);
 
-            objLoader.load(
-                '3d model/JCB truck/base.obj',
-                function (obj) {
-                    jcbModel = obj;
-                    jcbModel.traverse((node) => {
+                    if (gltf.animations && gltf.animations.length > 0) {
+                        mixerLeft = new THREE.AnimationMixer(gltf.scene);
+                        const action = mixerLeft.clipAction(gltf.animations[0]);
+                        action.play();
+                    }
+                    checkLoad();
+                },
+                undefined,
+                function (err) {
+                    console.error('Error loading Truck_Left.glb:', err);
+                    checkLoad();
+                }
+            );
+
+            // 3. Load Right Turn Truck Model
+            loader.load(
+                '3d model/Truck_Right.glb',
+                function (gltf) {
+                    initMetricsFromModel(gltf.scene);
+                    truckRightWrapper = createSubTruckWrapper(gltf.scene);
+                    truckRightWrapper.visible = false;
+                    truckContainer.add(truckRightWrapper);
+
+                    if (gltf.animations && gltf.animations.length > 0) {
+                        mixerRight = new THREE.AnimationMixer(gltf.scene);
+                        const action = mixerRight.clipAction(gltf.animations[0]);
+                        action.play();
+                    }
+                    checkLoad();
+                },
+                undefined,
+                function (err) {
+                    console.error('Error loading Truck_Right.glb:', err);
+                    checkLoad();
+                }
+            );
+
+            // 4. Load Coal_Load.glb (Station 1: Loading Site - JCB + Truck + Lid + Coal Field)
+            loader.load(
+                '3d model/Coal_Load.glb',
+                function (gltf) {
+                    coalLoadModel = gltf.scene;
+                    initMetricsFromModel(coalLoadModel);
+
+                    coalLoadModel.traverse((node) => {
                         if (node.isMesh) {
-                            node.material = jcbMat;
-                            node.castShadow = true;
-                            node.receiveShadow = true;
+                            if (node.name === 'Plane.020' || node.name.includes('Plane.020')) {
+                                node.visible = false; // Hide flat square ground slab
+                            } else {
+                                node.castShadow = true;
+                                node.receiveShadow = true;
+                                if (node.material) {
+                                    node.material.envMapIntensity = 0.5;
+                                    if (node.material.roughness !== undefined && node.material.roughness < 0.35) {
+                                        node.material.roughness = 0.45;
+                                    }
+                                }
+                            }
                         }
                     });
 
-                    const box = new THREE.Box3().setFromObject(jcbModel);
-                    const size = box.getSize(new THREE.Vector3());
-                    const center = box.getCenter(new THREE.Vector3());
+                    // Keep full model intact with truck, animated lid, and JCB
+                    if (gltf.animations && gltf.animations.length > 0) {
+                        mixerCoalLoad = new THREE.AnimationMixer(coalLoadModel);
+                        const action = mixerCoalLoad.clipAction(gltf.animations[0]);
+                        action.play();
+                        mixerCoalLoad.setTime(0);
+                    }
 
-                    // Normalize scale to match the normalized truck (truck is ~100 max, JCB should be ~25 high)
-                    const scale = 25 / size.y;
-                    jcbModel.scale.set(scale, scale, scale);
-                    jcbModel.position.y = (-center.y * scale) + (size.y * scale / 2);
+                    // Align with road at progress = 0.15 (Scene 2 loading site)
+                    const loadPoint = curve.getPointAt(0.15);
+                    const loadTangent = curve.getTangentAt(0.15);
 
-                    scene.add(jcbModel);
+                    const coalCentering = new THREE.Group();
+                    coalCentering.add(coalLoadModel);
+                    coalCentering.position.set(-truckRawCenter.x, -truckRawCenter.y + (truckRawHeight / 2), -truckRawCenter.z);
+
+                    const coalRotating = new THREE.Group();
+                    coalRotating.rotation.y = Math.PI / 2;
+                    coalRotating.scale.set(truckScaleFactor, truckScaleFactor, truckScaleFactor);
+                    coalRotating.add(coalCentering);
+
+                    coalLoadSiteGroup.add(coalRotating);
+                    coalLoadSiteGroup.position.copy(loadPoint);
+                    coalLoadSiteGroup.lookAt(loadPoint.clone().add(loadTangent));
+                    coalLoadSiteGroup.visible = false; // Hidden until truck arrives!
+
+                    checkLoad();
+                },
+                undefined,
+                function (err) {
+                    console.error('Error loading Coal_Load.glb:', err);
+                    checkLoad();
+                }
+            );
+
+            // 5. Load Coal_Unload.glb (Station 2: Waste Facility Unloading / Dumping Site)
+            loader.load(
+                '3d model/Coal_Unload.glb',
+                function (gltf) {
+                    coalUnloadModel = gltf.scene;
+                    initMetricsFromModel(coalUnloadModel);
+
+                    coalUnloadModel.traverse((node) => {
+                        if (node.isMesh) {
+                            node.castShadow = true;
+                            node.receiveShadow = true;
+                            if (node.material) {
+                                node.material.envMapIntensity = 0.5;
+                                if (node.material.roughness !== undefined && node.material.roughness < 0.35) {
+                                    node.material.roughness = 0.45;
+                                }
+                            }
+                        }
+                    });
+
+                    if (gltf.animations && gltf.animations.length > 0) {
+                        mixerCoalUnload = new THREE.AnimationMixer(coalUnloadModel);
+                        const action = mixerCoalUnload.clipAction(gltf.animations[0]);
+                        action.play();
+                        mixerCoalUnload.setTime(0);
+                    }
+
+                    // Align beside road at progress = 0.78 (Parked in Dumping Yard bay)
+                    const parkedPos = unloadPoint.clone().addScaledVector(yardRight, 34);
+
+                    const unloadCentering = new THREE.Group();
+                    unloadCentering.add(coalUnloadModel);
+                    unloadCentering.position.set(-truckRawCenter.x, -truckRawCenter.y + (truckRawHeight / 2), -truckRawCenter.z);
+
+                    const unloadRotating = new THREE.Group();
+                    unloadRotating.rotation.y = Math.PI / 2;
+                    unloadRotating.scale.set(truckScaleFactor, truckScaleFactor, truckScaleFactor);
+                    unloadRotating.add(unloadCentering);
+
+                    coalUnloadSiteGroup.add(unloadRotating);
+                    coalUnloadSiteGroup.position.copy(parkedPos);
+                    coalUnloadSiteGroup.lookAt(parkedPos.clone().add(unloadTangent));
+                    coalUnloadSiteGroup.visible = false; // Hidden until truck arrives!
+
+                    checkLoad();
+                },
+                undefined,
+                function (err) {
+                    console.error('Error loading Coal_Unload.glb:', err);
+                    checkLoad();
+                }
+            );
+
+            // 6. Load Shipping Container (1).glb (Placed around dumping yard, not overlapping)
+            loader.load(
+                '3d model/Shipping Container (1).glb',
+                function (gltf) {
+                    const containerScene = gltf.scene;
+                    containerScene.traverse((node) => {
+                        if (node.isMesh) {
+                            if (node.name === 'Plane') {
+                                node.visible = false; // Hide oversized built-in base slab
+                            } else {
+                                node.castShadow = true;
+                                node.receiveShadow = true;
+                                if (node.material) node.material.envMapIntensity = 0.5;
+                            }
+                        }
+                    });
+
+                    const containerGroup = new THREE.Group();
+                    containerScene.scale.set(10, 10, 10);
+                    containerGroup.add(containerScene);
+
+                    // Positioned at perimeter: yardRight * 80 + unloadTangent * 20 (cleanly outside parking bay)
+                    const containerPos = unloadPoint.clone()
+                        .addScaledVector(yardRight, 80)
+                        .addScaledVector(unloadTangent, 20);
+                    containerPos.y = 0;
+                    containerGroup.position.copy(containerPos);
+                    containerGroup.lookAt(containerPos.clone().add(unloadTangent));
+                    scene.add(containerGroup);
+
+                    checkLoad();
+                },
+                undefined,
+                function (err) {
+                    console.error('Error loading Shipping Container (1).glb:', err);
+                    checkLoad();
+                }
+            );
+
+            // 7. Load coal dump (1).glb (Stockpile placed safely behind parked truck, not overlapping)
+            loader.load(
+                '3d model/coal dump (1).glb',
+                function (gltf) {
+                    const coalDumpScene = gltf.scene;
+                    coalDumpScene.traverse((node) => {
+                        if (node.isMesh) {
+                            if (node.name === 'Plane.008' || node.name.includes('Plane.008')) {
+                                node.visible = false; // Hide flat square slab, leave organic 3D coal rocks
+                            } else {
+                                node.castShadow = true;
+                                node.receiveShadow = true;
+                                if (node.material) {
+                                    node.material.roughness = 0.95;
+                                    node.material.metalness = 0.1;
+                                    node.material.envMapIntensity = 0.5;
+                                }
+                            }
+                        }
+                    });
+
+                    const coalDumpGroup = new THREE.Group();
+                    coalDumpScene.scale.set(38, 38, 38);
+                    coalDumpGroup.add(coalDumpScene);
+
+                    // Positioned directly at the trailer discharge zone behind parked truck (stockpile receiving conveyor discharge)
+                    const coalDumpPos = unloadPoint.clone()
+                        .addScaledVector(yardRight, 34)
+                        .addScaledVector(unloadTangent, -78);
+                    coalDumpPos.y = 0;
+                    coalDumpGroup.position.copy(coalDumpPos);
+                    coalDumpGroup.rotation.y = 0.2;
+                    scene.add(coalDumpGroup);
+
+                    checkLoad();
+                },
+                undefined,
+                function (err) {
+                    console.error('Error loading coal dump (1).glb:', err);
                     checkLoad();
                 }
             );
@@ -642,183 +1008,402 @@
                         trigger: "#scroll-container",
                         start: "top top",
                         end: "bottom bottom",
-                        scrub: 1,
+                        scrub: 2.0, // Buttery smooth inertial scroll dampening
                     }
                 });
 
-                const maxDim = Math.max(truckSize.x, truckSize.y, truckSize.z);
-                // Zoom camera in significantly (cover 50% screen)
+                const maxDim = 100; // Normalized dimension
                 const baseCamRadius = maxDim * 1.5;
                 const baseCamHeight = maxDim * 0.4;
 
                 // Setup Initial State (Scene 1: Hero Side Profile)
-                sceneState.camTheta = Math.PI / 2; // Side
+                sceneState.camTheta = Math.PI / 2;
                 sceneState.camHeight = baseCamHeight;
                 sceneState.camRadius = baseCamRadius;
+                sceneState.camLookForward = 20;
+                sceneState.camLookSide = 0;
+                sceneState.camLookY = 0;
+                sceneState.camPanForward = 0;
+                sceneState.camCustomBlend = 0;
+                sceneState.loadProgress = 0;
 
-                // --- SCENE 1 to 2: Drive to Loading Site ---
-                // Tween animProgress further so wheels spin visibly
+                // --- SCENE 1 to 2: Drive to Loading Site (0.0s to 3.0s) ---
+                // Smooth deceleration into Station 1 halt at progress = 0.1500
                 tl.to(sceneState, { progress: 0.15, animProgress: 0.4, ease: "power2.inOut", duration: 3 }, "start");
 
-                // JCB comes in to load
-                tl.to(sceneState, { jcbDist: 30, ease: "power2.out", duration: 1 }, "start+=2");
-
-                // Camera does Circular Motion around truck during loading (orbit 360 degrees)
+                // Camera smoothly sweeps to elevated wide 3/4 angle as truck stops, perfectly cheating & masking the model switch
                 tl.to(sceneState, {
-                    camTheta: (Math.PI / 2) + (Math.PI * 2), // Orbit full circle
+                    camTheta: Math.PI * 1.25,
+                    camHeight: maxDim * 1.35,
+                    camRadius: maxDim * 2.1,
+                    camLookForward: -10,
+                    camLookSide: 0,
+                    camLookY: 10,
+                    ease: "power2.inOut",
+                    duration: 3
+                }, "start");
+
+                // --- SCENE 2: Extended JCB Loading & Top Lid Closing Animation (3.0s to 14.0s) ---
+                // Long, smooth scrubbing for Coal_Load.glb full 20.8s sequence (lid opens, JCB loads, lid closes)
+                tl.to(sceneState, { loadProgress: 1.0, ease: "none", duration: 11 }, "start+=3");
+
+                // Cinematic Multi-Angle Camera choreography during loading:
+                // Phase A (start+3 to start+6): High 3/4 isometric angle showing truck top lid opening
+                tl.to(sceneState, {
+                    camTheta: Math.PI * 1.45,
+                    camHeight: maxDim * 1.4,
+                    camRadius: maxDim * 2.0,
                     ease: "power1.inOut",
                     duration: 3
                 }, "start+=3");
 
-                tl.to(sceneState, { jcbDist: 100, ease: "power2.in", duration: 1 }, "start+=6"); // JCB leaves
+                // Phase B (start+6 to start+11): Orbit around to capture JCB scooping from coal field and loading trailer
+                tl.to(sceneState, {
+                    camTheta: Math.PI * 2.1,
+                    camHeight: maxDim * 0.95,
+                    camRadius: maxDim * 1.8,
+                    ease: "none",
+                    duration: 5
+                }, "start+=6");
 
-                // --- SCENE 2 to 3: The Graphic Journey (United Carriers style) ---
+                // Phase C (start+11 to start+14): Orbit to front-side view to clearly witness top lid rolling completely shut
+                tl.to(sceneState, {
+                    camTheta: Math.PI * 2.65,
+                    camHeight: maxDim * 0.65,
+                    camRadius: maxDim * 1.65,
+                    ease: "power1.out",
+                    duration: 3
+                }, "start+=11");
+
+                // --- SCENE 2 to 3: The Graphic Journey (14.0s to 21.0s) ---
                 // Camera shifts to high Back-Left isometric view
                 tl.to(sceneState, {
-                    camTheta: 2.75 * Math.PI, // Back-Left isometric
-                    camHeight: maxDim * 2.5, // High top-down
-                    camRadius: maxDim * 2.0,
+                    camTheta: 2.75 * Math.PI,
+                    camHeight: maxDim * 2.2,
+                    camRadius: maxDim * 1.9,
+                    camLookForward: 20,
+                    camLookSide: 0,
+                    camLookY: 0,
+                    camPanForward: 0,
+                    camCustomBlend: 0,
                     ease: "power2.inOut",
                     duration: 2
-                }, "start+=7");
+                }, "start+=14");
 
-                // Truck drives long distance
-                tl.to(sceneState, { progress: 0.78, animProgress: 0.78, ease: "none", duration: 6 }, "start+=8");
+                // Truck drives long distance (progress 0.15 -> 0.78), gently steering into dumping bay at 0.745 - 0.780
+                tl.to(sceneState, { progress: 0.78, animProgress: 0.78, ease: "none", duration: 7 }, "start+=14");
 
-                // --- SCENE 3 to 4: Unloading at Waste Facility ---
-                // Camera orbits to the BACKSIDE of the truck to show the unloading process
+                // --- SCENE 3: Dumping Yard Arrival - Pure Backside Focus (21.0s to 23.5s) ---
+                // Elevated angle directly behind the truck framing rear tailgate and discharge chute
                 tl.to(sceneState, {
-                    camTheta: 3.0 * Math.PI, // Perfectly behind the truck
-                    camHeight: maxDim * 1.0, // Lower down to look straight at the doors
-                    camRadius: maxDim * 2.5, // Far enough back to see the dump pile
+                    camTheta: 3.14159, // Directly behind the truck
+                    camHeight: maxDim * 0.75,
+                    camRadius: maxDim * 1.6,
+                    camPanForward: 0,
+                    camLookForward: -35, // Looking directly at the rear tailgate and discharge zone
+                    camLookSide: 0,      // Dead-center backside, not to the side!
+                    camLookY: maxDim * 0.12,
+                    camCustomBlend: 0,
                     ease: "power2.inOut",
-                    duration: 2
-                }, "start+=13");
+                    duration: 2.5
+                }, "start+=21");
 
-                // Mechanical animations trigger (doors open fully BEFORE coal drops)
-                // Use 0.999 instead of 1.0 to prevent Three.js mixer from wrapping the loop back to 0!
-                tl.to(sceneState, { animProgress: 0.999, ease: "none", duration: 1.5 }, "start+=13.5");
+                // Rear door unlocks and begins to open (0.0 -> 0.20 in unload animation)
+                tl.to(sceneState, { unloadProgress: 0.20, ease: "power1.inOut", duration: 2.5 }, "start+=21.0");
 
-                // Coal simulation: internal coal shrinks, ground pile grows
-                tl.to(sceneState, { coalScale: 0.1, ease: "none", duration: 3 }, "start+=15.5");
-                tl.to(sceneState, { pileScale: 1.0, ease: "none", duration: 3 }, "start+=15.5");
-
-                // --- SCENE 4 to 5: Pause, Setup Camera, Drive to End ---
-                // Close the doors before driving off!
-                tl.to(sceneState, { animProgress: 0.78, ease: "none", duration: 1 }, "start+=18.5");
-
-                // --- PAUSE & SETUP SHOT ---
-                // During a 1.5 second pause (18.5 to 20.0), we orbit the camera to the left side and push it forward
+                // --- SCENE 3b: Focused Backside Shot - Coal Discharge via Walking-Floor Conveyor (23.5s to 28.5s) ---
+                // Dedicated exterior perspective focused strictly on the backside of the trailer (never inside, never onside)
                 tl.to(sceneState, {
-                    camTheta: 3.5 * Math.PI, // Left side of truck (truck points right)
-                    camHeight: baseCamHeight,
-                    camRadius: baseCamRadius,
-                    camLookY: maxDim * 0.4, // Tilt camera UP slightly to push the truck into the bottom third
-                    camPanForward: 250, // Push camera forward down the road (less distance so it appears faster)
+                    camCustomBlend: 1.0,
+                    camLocalX: 0.0,   // Dead-center behind the truck, strictly on the backside
+                    camLocalY: 22.0,  // Elevated angle looking down at rear doors & walking-floor conveyor exit
+                    camLocalZ: -82.0, // Exterior backside distance, full view of rear discharge
+                    camTargetX: 0.0,  // Truck centerline
+                    camTargetY: 13.0, // Open rear door opening & walking-floor conveyor exit
+                    camTargetZ: -48.0,// Rear chute where coal pours out
                     ease: "power2.inOut",
-                    duration: 1.5
-                }, "start+=18.5");
+                    duration: 2.5
+                }, "start+=23.5");
 
-                // --- FINAL DRIVE ---
-                // Now from 20.0 to 23.0, the truck physically drives into the frame!
-                tl.fromTo(sceneState,
-                    { animProgress: 0 },
-                    { animProgress: 0.78, ease: "power2.inOut", duration: 3 },
-                    "start+=20.0"
-                );
-                tl.to(sceneState, { progress: 1.0, ease: "power2.inOut", duration: 3 }, "start+=20.0");
+                // Walking-floor conveyor runs, discharging coal backwards out the rear doors
+                tl.to(sceneState, { unloadProgress: 0.60, ease: "none", duration: 5.0 }, "start+=23.5");
 
-                // At the same time, camera pan tweens back to 0 so the truck catches up to the focus point!
-                tl.to(sceneState, { camPanForward: 0, ease: "power2.inOut", duration: 3 }, "start+=20.0");
+                // --- SCENE 3c: Backside & Stockpile Dump Shot (28.5s to 32.5s) ---
+                // Remains strictly on the backside, pulling back slightly to view the growing coal stockpile on the ground
+                tl.to(sceneState, {
+                    camCustomBlend: 1.0,
+                    camLocalX: 0.0,   // Strictly centered on backside (not onside)
+                    camLocalY: 18.0,  // Looking down at ground stockpile and chute
+                    camLocalZ: -88.0, // Exterior backside behind the trailer
+                    camTargetX: 0.0,
+                    camTargetY: 6.0,  // Down on the ground stockpile
+                    camTargetZ: -54.0,// Stockpile zone right behind tailgate
+                    ease: "power2.inOut",
+                    duration: 3.0
+                }, "start+=28.5");
 
-                // --- FINAL LOGO REVEAL ---
-                // Fades in the logo and text sequentially AFTER the truck arrives at the end
-                tl.to("#sec-5 .logo", { opacity: 1, y: 0, duration: 1, ease: "power2.out" }, "start+=22.5");
-                tl.to("#sec-5 h1", { opacity: 1, y: 0, duration: 1, ease: "power2.out" }, "start+=23.0");
-                tl.to("#sec-5 p", { opacity: 1, y: 0, duration: 1, ease: "power2.out" }, "start+=23.5");
+                // Coal finishes discharging onto the stockpile and rear doors close completely (0.60 -> 1.0)
+                tl.to(sceneState, { unloadProgress: 1.0, ease: "power1.out", duration: 4.0 }, "start+=28.5");
 
-                // --- TEXT ANIMATIONS (Premium Vertical Fade-Up) ---
-                const sections = document.querySelectorAll('.section');
-                sections.forEach((sec, i) => {
-                    if (sec.id === 'sec-5') return; // Skip sec-5, it's handled by the main timeline above!
+                // --- SCENE 4: Transition Camera & Truck Moves Forward to Next Step (32.5s to 37.0s) ---
+                // Camera blends smoothly back to highway chase view
+                tl.to(sceneState, {
+                    camCustomBlend: 0.0,
+                    camTheta: 3.45 * Math.PI,
+                    camHeight: baseCamHeight * 1.3,
+                    camRadius: baseCamRadius * 1.3,
+                    camLookForward: 25,
+                    camLookSide: 0,
+                    camLookY: maxDim * 0.2,
+                    camPanForward: 0,
+                    ease: "power2.inOut",
+                    duration: 2.0
+                }, "start+=32.5");
 
-                    gsap.to(sec.querySelectorAll('h1, p'), {
-                        scrollTrigger: {
-                            trigger: sec,
-                            start: "top 60%", // Triggers nicely as you scroll down
-                            toggleActions: "play reverse play reverse"
-                        },
-                        opacity: 1,
-                        y: 0,
-                        duration: 1.2,
-                        stagger: 0.15,
-                        ease: "power3.out"
-                    });
-                });
+                // Truck pulls out of dumping bay (0.788 to 0.820) and drives forward full speed to end of journey (progress 1.0)
+                tl.to(sceneState, {
+                    progress: 1.0,
+                    animProgress: 1.0,
+                    ease: "power2.inOut",
+                    duration: 4.5
+                }, "start+=33.0");
+
+                // Camera sweeps smoothly into side-faced hero framing with truck positioned on the RIGHT
+                tl.to(sceneState, {
+                    camCustomBlend: 1.0,
+                    camLocalX: 155.0,
+                    camLocalY: 22.0,
+                    camLocalZ: 12.0,
+                    camTargetX: -6.0,
+                    camTargetY: 10.0,
+                    camTargetZ: 36.0,
+                    ease: "power2.inOut",
+                    duration: 3.0
+                }, "start+=34.5");
+
+                // --- FINAL LOGO REVEAL (Right-aligned with black gradient backdrop) ---
+                tl.to("#hero-backdrop", { opacity: 1, duration: 1.0, ease: "power2.out" }, "start+=35.2");
+                tl.to("#sec-5 .logo", { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" }, "start+=35.5");
+                tl.to("#sec-5 h1", { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" }, "start+=35.8");
+                tl.to("#sec-5 p", { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" }, "start+=36.1");
             }
 
             // --- 9. Render Loop ---
             const truckPos = new THREE.Vector3();
             const truckTangent = new THREE.Vector3();
-            const jcbPos = new THREE.Vector3();
+            const tanA = new THREE.Vector3();
+            const tanB = new THREE.Vector3();
+
+            let lastProgress = 0;
+            let wheelSpinDistance = 0;
+
+            function getTruckPathState(p) {
+                const roadPoint = curve.getPointAt(p);
+                const roadTangent = curve.getTangentAt(p).normalize();
+                const up = new THREE.Vector3(0, 1, 0);
+                const roadRight = new THREE.Vector3().crossVectors(roadTangent, up).normalize();
+
+                // Smooth, gentle pull-off beside road into Dumping Yard parking bay:
+                // Approach & pull-in: 0.745 to 0.780 (subtle natural angle)
+                // Parked hold: 0.780 to 0.788
+                // Pull-out back to highway: 0.788 to 0.822
+                const MAX_OFFSET = 34;
+                let yardOffset = 0;
+                let turnPhase = 'NONE';
+                if (p >= 0.745 && p <= 0.780) {
+                    const t = (p - 0.745) / 0.035;
+                    const s = t * t * (3 - 2 * t);
+                    yardOffset = s * MAX_OFFSET;
+                    turnPhase = 'IN';
+                } else if (p > 0.780 && p < 0.788) {
+                    yardOffset = MAX_OFFSET;
+                    turnPhase = 'PARKED';
+                } else if (p >= 0.788 && p <= 0.822) {
+                    const t = (p - 0.788) / 0.034;
+                    const s = t * t * (3 - 2 * t);
+                    yardOffset = (1 - s) * MAX_OFFSET;
+                    turnPhase = 'OUT';
+                }
+
+                const pos = roadPoint.clone().addScaledVector(roadRight, yardOffset);
+                return { pos, yardOffset, roadTangent, roadRight, turnPhase };
+            }
+
+            function getTruckHeading(p) {
+                const delta = 0.0012;
+                const pPrev = Math.max(0, p - delta);
+                const pNext = Math.min(1, p + delta);
+                const p1 = getTruckPathState(pPrev).pos;
+                const p2 = getTruckPathState(pNext).pos;
+                const heading = p2.clone().sub(p1);
+                if (heading.lengthSq() > 0.000001) {
+                    heading.normalize();
+                } else {
+                    heading.copy(curve.getTangentAt(p).normalize());
+                }
+                return heading;
+            }
 
             function animate() {
                 requestAnimationFrame(animate);
 
                 if (truckModel) {
-                    // Update Truck Position along curve
-                    curve.getPointAt(sceneState.progress, truckPos);
-                    curve.getTangentAt(sceneState.progress, truckTangent);
+                    // Update Truck Position & Natural Heading along smooth path
+                    const pathState = getTruckPathState(sceneState.progress);
+                    truckPos.copy(pathState.pos);
+                    const truckHeading = getTruckHeading(sceneState.progress);
+                    const truckUp = new THREE.Vector3(0, 1, 0);
+                    const truckRight = new THREE.Vector3().crossVectors(truckHeading, truckUp).normalize();
 
                     truckModel.position.copy(truckPos);
-
-                    // Make truck look along the curve
-                    const lookAtTarget = truckPos.clone().add(truckTangent);
+                    const lookAtTarget = truckPos.clone().add(truckHeading);
                     truckModel.lookAt(lookAtTarget);
 
-                    // Update Camera Position relative to Truck
-                    // Theta is relative to the truck's forward tangent
-                    const angle = Math.atan2(truckTangent.x, truckTangent.z); // Current yaw of truck
-                    const finalTheta = angle + sceneState.camTheta;
+                    // Move directional light with truck
+                    dirLight.position.set(truckPos.x + 100, truckPos.y + 300, truckPos.z + 100);
+                    dirLight.target.position.copy(truckPos);
+                    dirLight.target.updateMatrixWorld();
 
-                    camera.position.x = truckPos.x + (Math.sin(finalTheta) * sceneState.camRadius);
-                    camera.position.z = truckPos.z + (Math.cos(finalTheta) * sceneState.camRadius);
-                    camera.position.y = truckPos.y + sceneState.camHeight;
+                    // --- Camera Choreography with Dual Mode Blending ---
+                    // 1. Orbit Mode (for highway driving and centered yard arrival)
+                    const headingAngle = Math.atan2(truckHeading.x, truckHeading.z);
+                    const finalTheta = headingAngle + sceneState.camTheta;
 
-                    // Cinematic forward pan
-                    const panOffset = truckTangent.clone().multiplyScalar(sceneState.camPanForward);
-                    camera.position.add(panOffset);
+                    const orbitPos = new THREE.Vector3(
+                        truckPos.x + (Math.sin(finalTheta) * sceneState.camRadius),
+                        truckPos.y + sceneState.camHeight,
+                        truckPos.z + (Math.cos(finalTheta) * sceneState.camRadius)
+                    );
+                    const panOffset = truckHeading.clone().multiplyScalar(sceneState.camPanForward);
+                    orbitPos.add(panOffset);
 
-                    // Look at the truck, but slightly forward so it's not perfectly centered in top-down
-                    const camLook = truckPos.clone().add(truckTangent.clone().multiplyScalar(50));
-                    camLook.add(panOffset);
-                    camLook.y += sceneState.camLookY; // Add vertical offset for final framing
-                    camera.lookAt(camLook);
+                    const orbitLook = truckPos.clone()
+                        .addScaledVector(truckHeading, sceneState.camLookForward)
+                        .addScaledVector(truckRight, sceneState.camLookSide);
+                    orbitLook.add(panOffset);
+                    orbitLook.y += sceneState.camLookY;
 
-                    // Update Coal Scales
-                    internalCoal.scale.z = sceneState.coalScale;
-                    // Move internal coal backwards as it shrinks to simulate conveyor
-                    internalCoal.position.z = -10 + (1 - sceneState.coalScale) * -40;
+                    // 2. Custom Local Mode (for inside truck conveyor shot & exterior dump shot)
+                    const customPos = truckPos.clone()
+                        .addScaledVector(truckRight, sceneState.camLocalX)
+                        .addScaledVector(truckHeading, sceneState.camLocalZ);
+                    customPos.y += sceneState.camLocalY;
 
-                    groundCoal.scale.set(sceneState.pileScale, sceneState.pileScale, sceneState.pileScale);
+                    const customLook = truckPos.clone()
+                        .addScaledVector(truckRight, sceneState.camTargetX)
+                        .addScaledVector(truckHeading, sceneState.camTargetZ);
+                    customLook.y += sceneState.camTargetY;
 
-                    // Update JCB Position (Positioned near the loading site at progress = 0.15)
-                    if (jcbModel) {
-                        const loadPoint = curve.getPointAt(0.15);
-                        const loadTangent = curve.getTangentAt(0.15);
+                    // 3. Smooth Lerp Blending
+                    const blend = Math.max(0, Math.min(1, sceneState.camCustomBlend));
+                    camera.position.lerpVectors(orbitPos, customPos, blend);
+                    const finalLook = orbitLook.clone().lerp(customLook, blend);
+                    camera.lookAt(finalLook);
 
-                        // JCB offset perpendicular to road
-                        const rightVec = new THREE.Vector3(-loadTangent.z, 0, loadTangent.x);
-                        jcbPos.copy(loadPoint).add(rightVec.multiplyScalar(sceneState.jcbDist));
+                    // Wheel spinning distance for straight driving
+                    const dProg = Math.abs(sceneState.progress - lastProgress);
+                    wheelSpinDistance += dProg * 2500;
+                    lastProgress = sceneState.progress;
+                    const straightWheelTime = (wheelSpinDistance * 0.05) % 4.625;
 
-                        jcbModel.position.copy(jcbPos);
-                        jcbModel.lookAt(loadPoint);
+                    // --- Natural, Subtle Steering Animation ---
+                    // Clamp maximum wheel turn to 0.95s (out of 2.3125s) for authentic, gentle steering angles
+                    const T_STEER_MAX = 0.95;
+
+                    if (pathState.turnPhase === 'IN' && sceneState.progress >= 0.748 && sceneState.progress <= 0.778) {
+                        // Naturally turning right into the dumping yard
+                        const inRatio = (sceneState.progress - 0.748) / 0.030;
+                        const steerTime = inRatio < 0.5
+                            ? (inRatio / 0.5) * T_STEER_MAX
+                            : (1 - (inRatio - 0.5) / 0.5) * T_STEER_MAX;
+                        if (truckRightWrapper) truckRightWrapper.visible = true;
+                        if (truckStraightWrapper) truckStraightWrapper.visible = false;
+                        if (truckLeftWrapper) truckLeftWrapper.visible = false;
+                        if (mixerRight) mixerRight.setTime(steerTime);
+                    } else if (pathState.turnPhase === 'OUT' && sceneState.progress >= 0.789 && sceneState.progress <= 0.819) {
+                        // Naturally turning left out of dumping yard back onto road
+                        const outRatio = (sceneState.progress - 0.789) / 0.030;
+                        const steerTime = outRatio < 0.5
+                            ? (outRatio / 0.5) * T_STEER_MAX
+                            : (1 - (outRatio - 0.5) / 0.5) * T_STEER_MAX;
+                        if (truckLeftWrapper) truckLeftWrapper.visible = true;
+                        if (truckStraightWrapper) truckStraightWrapper.visible = false;
+                        if (truckRightWrapper) truckRightWrapper.visible = false;
+                        if (mixerLeft) mixerLeft.setTime(steerTime);
+                    } else {
+                        // Standard highway curvature turn zones
+                        let activeZone = null;
+                        if (sceneState.progress > 0.155 && sceneState.progress < 0.745) {
+                            for (let i = 0; i < turnZones.length; i++) {
+                                const z = turnZones[i];
+                                if (sceneState.progress >= z.start && sceneState.progress <= z.end) {
+                                    activeZone = z;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (activeZone) {
+                            let turnRatio = 0.5;
+                            if (sceneState.progress < activeZone.enterEnd) {
+                                turnRatio = (sceneState.progress - activeZone.start) / Math.max(0.0001, activeZone.enterEnd - activeZone.start);
+                            } else if (sceneState.progress > activeZone.exitStart) {
+                                turnRatio = 1.0 - ((sceneState.progress - activeZone.exitStart) / Math.max(0.0001, activeZone.end - activeZone.exitStart));
+                            } else {
+                                turnRatio = 1.0;
+                            }
+                            const turnAnimTime = Math.max(0, Math.min(T_STEER_MAX, turnRatio * T_STEER_MAX));
+
+                            if (activeZone.type === 'LEFT') {
+                                if (truckLeftWrapper) truckLeftWrapper.visible = true;
+                                if (truckStraightWrapper) truckStraightWrapper.visible = false;
+                                if (truckRightWrapper) truckRightWrapper.visible = false;
+                                if (mixerLeft) mixerLeft.setTime(turnAnimTime);
+                            } else {
+                                if (truckRightWrapper) truckRightWrapper.visible = true;
+                                if (truckStraightWrapper) truckStraightWrapper.visible = false;
+                                if (truckLeftWrapper) truckLeftWrapper.visible = false;
+                                if (mixerRight) mixerRight.setTime(turnAnimTime);
+                            }
+                        } else {
+                            // Driving Straight: Truck_Straight.glb
+                            if (truckStraightWrapper) truckStraightWrapper.visible = true;
+                            if (truckLeftWrapper) truckLeftWrapper.visible = false;
+                            if (truckRightWrapper) truckRightWrapper.visible = false;
+                            if (mixerStraight) mixerStraight.setTime(straightWheelTime);
+                        }
                     }
 
-                    // Map the entire baked animation to the custom animProgress
-                    if (mixer && sceneState.maxAnimDuration > 0) {
-                        // animProgress decouples the mechanical animations from the truck's physical progress
-                        mixer.setTime(sceneState.animProgress * sceneState.maxAnimDuration);
+                    // --- Station Visibility and Animation Triggering ---
+                    // 1. Station 1 (Loading Site, progress = 0.1500 standstill only):
+                    // Perfectly swaps when truck is completely stopped to eliminate any teleport frame jerk
+                    const atLoadingStation = (sceneState.progress >= 0.1498 && sceneState.progress <= 0.1502 && sceneState.loadProgress < 1.0);
+
+                    // 2. Station 2 (Unloading / Dumping Site, progress ~ 0.78):
+                    const atUnloadStation = (sceneState.progress >= 0.779 && sceneState.progress <= 0.788);
+
+                    if (atLoadingStation) {
+                        truckContainer.visible = false;
+                        coalLoadSiteGroup.visible = true;
+                        if (coalUnloadSiteGroup) coalUnloadSiteGroup.visible = false;
+
+                        if (mixerCoalLoad) {
+                            mixerCoalLoad.setTime(sceneState.loadProgress * 20.8333);
+                        }
+                    } else if (atUnloadStation) {
+                        truckContainer.visible = false;
+                        coalLoadSiteGroup.visible = false;
+                        if (coalUnloadSiteGroup) {
+                            coalUnloadSiteGroup.visible = true;
+                            if (mixerCoalUnload) {
+                                mixerCoalUnload.setTime(sceneState.unloadProgress * 20.8333);
+                            }
+                        }
+                    } else {
+                        // Open highway driving:
+                        truckContainer.visible = true;
+                        coalLoadSiteGroup.visible = false;
+                        if (coalUnloadSiteGroup) coalUnloadSiteGroup.visible = false;
                     }
                 }
 

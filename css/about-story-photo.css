@@ -1,0 +1,11 @@
+﻿/* The full original yard photograph, retaining the story image backing and rule. */
+.editorial-mock.ed-page-about .ed-about-story-photo .ed-image-surface {
+  aspect-ratio:auto;
+  display:block;
+}
+.editorial-mock.ed-page-about .ed-about-story-photo .ed-image-surface > img {
+  display:block;
+  width:100%;
+  height:auto;
+}
+
